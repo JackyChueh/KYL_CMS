@@ -33,7 +33,7 @@ namespace KYL_CMS.Controllers
             {
                 Log("Req=" + JsonConvert.SerializeObject(req));
 
-                res = new Interview("KYL").PaginationRetrieve(req, User.Identity.Name);
+                res = new Interview("KYL").PaginationRetrieve(req, Session["ID"].ToString());
                 res.ReturnStatus = new ReturnStatus(ReturnCode.SUCCESS);
             }
             catch (Exception ex)
@@ -83,7 +83,7 @@ namespace KYL_CMS.Controllers
                 Log("Res=" + data);
                 CaseModifyReq req = new CaseModifyReq();
                 JsonConvert.PopulateObject(data, req);
-                req.CASE.MUSER = User.Identity.Name;
+                req.CASE.MUSER = Session["ID"].ToString();
                 int i = new Interview("KYL").DataUpdate(req);
 
                 //res.CASE = new Case("KYL").ModificationQuery(req.CASE.SN);
@@ -110,7 +110,7 @@ namespace KYL_CMS.Controllers
                 if (User.Identity.IsAuthenticated)
                 {
                     USERS users = new USERS();
-                    users.ID = User.Identity.Name;
+                    users.ID = Session["ID"].ToString();
                     res.USERS = users;
                     res.ReturnStatus = new ReturnStatus(ReturnCode.SUCCESS);
                 }

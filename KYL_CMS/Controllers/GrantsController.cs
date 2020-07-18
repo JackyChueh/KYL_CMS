@@ -80,8 +80,8 @@ namespace KYL_CMS.Controllers
             try
             {
                 Log("Req=" + JsonConvert.SerializeObject(req));
-                req.CUSER = User.Identity.Name;
-                req.MUSER = User.Identity.Name;
+                req.CUSER = Session["ID"].ToString();
+                req.MUSER = Session["ID"].ToString();
                 int i = new Grants("SCC").ByUsersUpdate(req);
 
                 res.ReturnStatus = new ReturnStatus(ReturnCode.SET_SUCCESS);
@@ -105,8 +105,8 @@ namespace KYL_CMS.Controllers
             try
             {
                 Log("Req=" + JsonConvert.SerializeObject(req));
-                req.CUSER = User.Identity.Name;
-                req.MUSER = User.Identity.Name;
+                req.CUSER = Session["ID"].ToString();
+                req.MUSER = Session["ID"].ToString();
                 int i = new Grants("SCC").ByRolesUpdate(req);
 
                 res.ReturnStatus = new ReturnStatus(ReturnCode.SET_SUCCESS);
@@ -153,7 +153,7 @@ namespace KYL_CMS.Controllers
             try
             {
                 Log("Req=" + JsonConvert.SerializeObject(req));
-                req.GRANTS.MUSER = User.Identity.Name;
+                req.GRANTS.MUSER = Session["ID"].ToString();
                 int i = new Grants("SCC").DataUpdate(req);
 
                 res = new GrantsModifyRes
@@ -180,7 +180,7 @@ namespace KYL_CMS.Controllers
             try
             {
                 Log("Req=" + JsonConvert.SerializeObject(req));
-                req.GRANTS.MUSER = User.Identity.Name;
+                req.GRANTS.MUSER = Session["ID"].ToString();
                 int i = new Grants("SCC").DataDelete(req);
 
                 res = new GrantsModifyRes
@@ -213,8 +213,8 @@ namespace KYL_CMS.Controllers
             try
             {
                 Log("Req=" + JsonConvert.SerializeObject(req));
-                req.GRANTS.CUSER = User.Identity.Name;
-                req.GRANTS.MUSER = User.Identity.Name;
+                req.GRANTS.CUSER = Session["ID"].ToString();
+                req.GRANTS.MUSER = Session["ID"].ToString();
 
                 int i = new Grants("SCC").DataCreate(req);
                 res = new GrantsModifyRes

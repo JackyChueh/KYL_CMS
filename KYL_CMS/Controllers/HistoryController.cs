@@ -28,7 +28,7 @@ namespace KYL_CMS.Controllers
             {
                 Log("Req=" + JsonConvert.SerializeObject(req));
 
-                res = new History("KYL").PaginationRetrieve(req, User.Identity.Name);
+                res = new History("KYL").PaginationRetrieve(req, Session["ID"].ToString());
                 res.ReturnStatus = new ReturnStatus(ReturnCode.SUCCESS);
             }
             catch (Exception ex)
@@ -52,7 +52,7 @@ namespace KYL_CMS.Controllers
                 Log("Req=" + JsonConvert.SerializeObject(req));
                 res = new CaseModifyRes
                 {
-                    CASE = new History("KYL").ModificationQuery(req.CASE.SN, User.Identity.Name),
+                    CASE = new History("KYL").ModificationQuery(req.CASE.SN, Session["ID"].ToString()),
                     ReturnStatus = new ReturnStatus(ReturnCode.SUCCESS)
                 };
             }

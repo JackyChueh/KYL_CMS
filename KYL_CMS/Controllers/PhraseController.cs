@@ -77,7 +77,7 @@ namespace KYL_CMS.Controllers
             try
             {
                 Log("Req=" + JsonConvert.SerializeObject(req));
-                req.PHRASE.MUSER = User.Identity.Name;
+                req.PHRASE.MUSER = Session["ID"].ToString();
 
 
                 PhraseModifyReq oldData = new PhraseModifyReq();
@@ -120,7 +120,7 @@ namespace KYL_CMS.Controllers
             try
             {
                 Log("Req=" + JsonConvert.SerializeObject(req));
-                req.PHRASE.MUSER = User.Identity.Name;
+                req.PHRASE.MUSER = Session["ID"].ToString();
                 if (new Interview("KYL").CheckPharseUsed(req))
                 {
                     res = new PhraseModifyRes
@@ -163,8 +163,8 @@ namespace KYL_CMS.Controllers
             try
             {
                 Log("Req=" + JsonConvert.SerializeObject(req));
-                req.PHRASE.CUSER = User.Identity.Name;
-                req.PHRASE.MUSER = User.Identity.Name;
+                req.PHRASE.CUSER = Session["ID"].ToString();
+                req.PHRASE.MUSER = Session["ID"].ToString();
 
                 int i = new KYL_CMS.Models.BusinessLogic.Phrase("SCC").DataCreate(req);
                 res = new PhraseModifyRes

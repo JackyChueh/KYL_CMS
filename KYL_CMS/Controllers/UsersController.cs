@@ -78,7 +78,7 @@ namespace KYL_CMS.Controllers
             try
             {
                 Log("Req=" + JsonConvert.SerializeObject(req));
-                req.USERS.MUSER = User.Identity.Name;
+                req.USERS.MUSER = Session["ID"].ToString();
 
                 UsersModifyReq oldData = new UsersModifyReq();
                 oldData.USERS = new KYL_CMS.Models.BusinessLogic.Users("SCC").ModificationQuery(req.USERS.SN);
@@ -119,7 +119,7 @@ namespace KYL_CMS.Controllers
             try
             {
                 Log("Req=" + JsonConvert.SerializeObject(req));
-                req.USERS.MUSER = User.Identity.Name;
+                req.USERS.MUSER = Session["ID"].ToString();
 
                 UsersModifyReq oldData = new UsersModifyReq();
                 oldData.USERS = new KYL_CMS.Models.BusinessLogic.Users("SCC").ModificationQuery(req.USERS.SN);
@@ -151,7 +151,7 @@ namespace KYL_CMS.Controllers
             try
             {
                 Log("Req=" + JsonConvert.SerializeObject(req));
-                req.USERS.MUSER = User.Identity.Name;
+                req.USERS.MUSER = Session["ID"].ToString();
                 if (new Interview("KYL").CheckUserIdUsed(req.USERS.ID))
                 {
                     res = new UsersModifyRes
@@ -196,8 +196,8 @@ namespace KYL_CMS.Controllers
             try
             {
                 Log("Req=" + JsonConvert.SerializeObject(req));
-                req.USERS.CUSER = User.Identity.Name;
-                req.USERS.MUSER = User.Identity.Name;
+                req.USERS.CUSER = Session["ID"].ToString();
+                req.USERS.MUSER = Session["ID"].ToString();
                 if (req.USERS.PASSWORD.Length == 0)
                 {
                     req.USERS.PASSWORD = req.USERS.ID;

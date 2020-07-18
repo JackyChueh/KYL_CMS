@@ -81,15 +81,15 @@ namespace KYL_CMS.Controllers
             {
                 //上傳檔案
                 string fileName = new UploadFile().FamilyFileUpload(Request);
-
+                
                 try
                 {
                     string data = Request["data"];
                     Log("Res=" + data);
                     CaseModifyReq req = new CaseModifyReq();
                     JsonConvert.PopulateObject(data, req);
-                    req.CASE.CUSER = User.Identity.Name;
-                    req.CASE.MUSER = User.Identity.Name;
+                    req.CASE.CUSER = Session["ID"].ToString(); // User.Identity.Name;
+                    req.CASE.MUSER = Session["ID"].ToString();
                     req.CASE.FAMILY_FILE = fileName;
                     int i = new Case("KYL").DataCreate(req);
 
@@ -131,8 +131,8 @@ namespace KYL_CMS.Controllers
                     Log("Res=" + data);
                     CaseModifyReq req = new CaseModifyReq();
                     JsonConvert.PopulateObject(data, req);
-                    req.CASE.CUSER = User.Identity.Name;
-                    req.CASE.MUSER = User.Identity.Name;
+                    req.CASE.CUSER = Session["ID"].ToString();
+                    req.CASE.MUSER = Session["ID"].ToString();
                     req.CASE.FAMILY_FILE = fileName;
                     int i = new Case("KYL").DataUpdate(req);
 
@@ -169,8 +169,8 @@ namespace KYL_CMS.Controllers
                 Log("Res=" + data);
                 CaseModifyReq req = new CaseModifyReq();
                 JsonConvert.PopulateObject(data, req);
-                req.CASE.CUSER = User.Identity.Name;
-                req.CASE.MUSER = User.Identity.Name;
+                req.CASE.CUSER = Session["ID"].ToString();
+                req.CASE.MUSER = Session["ID"].ToString();
                 int i = new Case("KYL").DataDelete(req);
                 res.ReturnStatus = new ReturnStatus(ReturnCode.DEL_SUCCESS);
             }

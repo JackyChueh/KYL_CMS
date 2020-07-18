@@ -56,7 +56,7 @@ namespace KYL_CMS.Controllers
                 Log("Res=" + data);
                 MergeModifyReq req = new MergeModifyReq();
                 JsonConvert.PopulateObject(data, req);
-                req.ADD.MUSER = User.Identity.Name;
+                req.ADD.MUSER = Session["ID"].ToString();
                 int i = new Case("KYL").DataMerge(req);
 
                 res.CASE = req.ADD;

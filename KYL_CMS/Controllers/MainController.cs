@@ -103,9 +103,10 @@ namespace KYL_CMS.Controllers
  
                     var json = JsonConvert.SerializeObject(userInfo);
 
+                    //var aaa = Session["ID"] == null ? "" : Session["ID"].ToString();
                     //FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(
                     //       version: 1,
-                    //       name: account,   //User.Identity.Name
+                    //       name: account,   //Session["ID"].ToString()
                     //       issueDate: DateTime.Now,
                     //       expiration: DateTime.Now.AddMinutes(1440),
                     //       isPersistent: false, //remeber-me
@@ -181,7 +182,7 @@ namespace KYL_CMS.Controllers
                         };
                         userinfo.USERS.SN = users.SN;
                         userinfo.USERS.PASSWORD = password;
-                        userinfo.USERS.MUSER = User.Identity.Name;
+                        userinfo.USERS.MUSER = Session["ID"].ToString();
                         int i = new KYL_CMS.Models.BusinessLogic.Users("SCC").DataReset(userinfo, 0);
                         return RedirectToAction("Dashboard", "Main");
                     }

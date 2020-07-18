@@ -77,7 +77,7 @@ namespace KYL_CMS.Controllers
             try
             {
                 Log("Req=" + JsonConvert.SerializeObject(req));
-                req.ROLES.MUSER = User.Identity.Name;
+                req.ROLES.MUSER = Session["ID"].ToString();
                 int i = new Roles("SCC").DataUpdate(req);
 
                 res = new RolesModifyRes
@@ -105,7 +105,7 @@ namespace KYL_CMS.Controllers
             try
             {
                 Log("Req=" + JsonConvert.SerializeObject(req));
-                req.ROLES.MUSER = User.Identity.Name;
+                req.ROLES.MUSER = Session["ID"].ToString();
                 int i = new Roles("SCC").DataDelete(req);
 
                 res = new RolesModifyRes
@@ -139,8 +139,8 @@ namespace KYL_CMS.Controllers
             try
             {
                 Log("Req=" + JsonConvert.SerializeObject(req));
-                req.ROLES.CUSER = User.Identity.Name;
-                req.ROLES.MUSER = User.Identity.Name;
+                req.ROLES.CUSER = Session["ID"].ToString();
+                req.ROLES.MUSER = Session["ID"].ToString();
 
                 int i = new Roles("SCC").DataCreate(req);
                 res = new RolesModifyRes

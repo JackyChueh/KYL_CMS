@@ -650,7 +650,7 @@
     <script src="~/js/Interview/Interview_index.js"></script>
     <script type="text/JavaScript">
         $(document).ready(function () {
-            InterviewIndex.UserId = '@User.Identity.Name';
+            InterviewIndex.UserId = '@Session["ID"] == null ? "" : Session["ID"].ToString()';
             InterviewIndex.Page_Init();
         });
     </script>

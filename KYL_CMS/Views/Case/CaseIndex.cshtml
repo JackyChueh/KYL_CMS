@@ -644,7 +644,7 @@
     <script src="~/js/Case/case_index.js"></script>
     <script type="text/JavaScript">
         $(document).ready(function () {
-            CaseIndex.UserId = '@User.Identity.Name';
+            CaseIndex.UserId = '@Session["ID"] == null ? "" : Session["ID"].ToString()';
             CaseIndex.Page_Init();
         });
     </script>
