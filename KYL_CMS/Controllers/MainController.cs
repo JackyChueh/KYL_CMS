@@ -21,9 +21,12 @@ namespace KYL_CMS.Controllers
         {
             try
             {
-                FormsIdentity id = (FormsIdentity)User.Identity;
-                FormsAuthenticationTicket ticket = id.Ticket;
-                USER_INFO userInfo = JsonConvert.DeserializeObject<USER_INFO>(ticket.UserData);
+                //FormsIdentity id = (FormsIdentity)User.Identity;
+                //FormsAuthenticationTicket ticket = id.Ticket;
+                //USER_INFO users = JsonConvert.DeserializeObject<USER_INFO>(ticket.UserData);
+
+                USER_INFO userInfo = JsonConvert.DeserializeObject<USER_INFO>(Session["INFO"].ToString());
+
                 ViewBag.Sidebar = new Authority("SCC").UserFunctionAuthority(userInfo);
             }
             catch (Exception ex)
@@ -37,24 +40,43 @@ namespace KYL_CMS.Controllers
         ////[Authorize]
         public ActionResult Dashboard()
         {
-            return View();
+            if (Session["ID"] == null)
+            {
+                return RedirectToAction("Login", "Main");
+            }
+            else
+            {
+                return View();
+            }
+
         }
 
         ////[Authorize]
         public ActionResult ForceChange()
         {
-            return View();
+            if (Session["ID"] == null)
+            {
+                return RedirectToAction("Login", "Main");
+            }
+            else
+            {
+                return View();
+            }
         }
 
         public ActionResult Login()
         {
             //Session.RemoveAll();
-            FormsAuthentication.SignOut();
             //FormCollection data = new FormCollection();
             //data.Add("account", "Admin");
             //data.Add("password", "TWtaxi");
 
             //return Login(data);
+
+            //FormsAuthentication.SignOut();
+
+            Session.Clear();
+            Session.Abandon();
             return View();
 
         }
@@ -80,19 +102,23 @@ namespace KYL_CMS.Controllers
                 {
  
                     var json = JsonConvert.SerializeObject(userInfo);
-                    FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(
-                           version: 1,
-                           name: account,   //User.Identity.Name
-                           issueDate: DateTime.Now,
-                           expiration: DateTime.Now.AddMinutes(1440),
-                           isPersistent: false, //remeber-me
-                           userData: json,  //user-data
-                           cookiePath: FormsAuthentication.FormsCookiePath
-                           );
 
-                    string encryptTicket = FormsAuthentication.Encrypt(ticket);
+                    //FormsAuthenticationTicket ticket = new FormsAuthenticationTicket(
+                    //       version: 1,
+                    //       name: account,   //User.Identity.Name
+                    //       issueDate: DateTime.Now,
+                    //       expiration: DateTime.Now.AddMinutes(1440),
+                    //       isPersistent: false, //remeber-me
+                    //       userData: json,  //ticket.UserData
+                    //       cookiePath: FormsAuthentication.FormsCookiePath
+                    //       );
 
-                    Response.Cookies.Add(new HttpCookie(FormsAuthentication.FormsCookieName, encryptTicket));
+                    //string encryptTicket = FormsAuthentication.Encrypt(ticket);
+
+                    //Response.Cookies.Add(new HttpCookie(FormsAuthentication.FormsCookieName, encryptTicket));
+
+                    Session["ID"] = account;
+                    Session["INFO"] = json;
 
                     if (userInfo.FORCE_PWD == 1)
                     {
@@ -128,54 +154,71 @@ namespace KYL_CMS.Controllers
         [AcceptVerbs("POST")]
         public ActionResult ForceChange(FormCollection data)
         {
-            ReturnStatus res = new ReturnStatus(ReturnCode.FAIL);
-            string password = data["PASSWORD"];
-            string password2 = data["PASSWORD2"];
-
-            FormsIdentity id = (FormsIdentity)User.Identity;
-            FormsAuthenticationTicket ticket = id.Ticket;
-            USER_INFO users = JsonConvert.DeserializeObject<USER_INFO>(ticket.UserData);
-            Log("password={0}, password2={1}, sn={2}", password, password2, users.SN);
-
-            if (password == password2)
+            if (Session["ID"] == null)
             {
-                try
-                {
-                    UsersModifyReq userinfo = new UsersModifyReq
-                    {
-                        USERS = new USERS()
-                    };
-                    userinfo.USERS.SN = users.SN;
-                    userinfo.USERS.PASSWORD = password;
-                    userinfo.USERS.MUSER = User.Identity.Name;
-                    int i = new KYL_CMS.Models.BusinessLogic.Users("SCC").DataReset(userinfo, 0);
-                    return RedirectToAction("Dashboard", "Main");
-                }
-                catch (Exception ex)
-                {
-                    Log("Err=" + ex.Message);
-                    Log(ex.StackTrace);
-                    res = new ReturnStatus(ReturnCode.SERIOUS_ERROR);
-                }
-                Log("Res=" + JsonConvert.SerializeObject(res));
+                return RedirectToAction("Login", "Main");
             }
-            return View(res);
+            else
+            {
+                ReturnStatus res = new ReturnStatus(ReturnCode.FAIL);
+                string password = data["PASSWORD"];
+                string password2 = data["PASSWORD2"];
+
+                //FormsIdentity id = (FormsIdentity)User.Identity;
+                //FormsAuthenticationTicket ticket = id.Ticket;
+                //USER_INFO users = JsonConvert.DeserializeObject<USER_INFO>(ticket.UserData);
+                USER_INFO users = JsonConvert.DeserializeObject<USER_INFO>(Session["INFO"].ToString());
+
+                Log("password={0}, password2={1}, sn={2}", password, password2, users.SN);
+
+                if (password == password2)
+                {
+                    try
+                    {
+                        UsersModifyReq userinfo = new UsersModifyReq
+                        {
+                            USERS = new USERS()
+                        };
+                        userinfo.USERS.SN = users.SN;
+                        userinfo.USERS.PASSWORD = password;
+                        userinfo.USERS.MUSER = User.Identity.Name;
+                        int i = new KYL_CMS.Models.BusinessLogic.Users("SCC").DataReset(userinfo, 0);
+                        return RedirectToAction("Dashboard", "Main");
+                    }
+                    catch (Exception ex)
+                    {
+                        Log("Err=" + ex.Message);
+                        Log(ex.StackTrace);
+                        res = new ReturnStatus(ReturnCode.SERIOUS_ERROR);
+                    }
+                    Log("Res=" + JsonConvert.SerializeObject(res));
+                }
+                return View(res);
+            }
         }
 
         ////[Authorize]
         public string ItemListRetrieve(ItemListRetrieveReq req)
         {
             ItemListRetrieveRes res = new ItemListRetrieveRes();
-            try
+
+            if (Session["ID"] == null)
             {
-                res = new Models.HelpLibrary.QueryItems("SCC").ItemListQuery(req);
-                res.ReturnStatus = new ReturnStatus(ReturnCode.SUCCESS);
+                res.ReturnStatus = new ReturnStatus(ReturnCode.SESSION_TIMEOUT);
             }
-            catch (Exception ex)
+            else
             {
-                Log("Err=" + ex.Message);
-                Log(ex.StackTrace);
-                res.ReturnStatus = new ReturnStatus(ReturnCode.SERIOUS_ERROR);
+                try
+                {
+                    res = new Models.HelpLibrary.QueryItems("SCC").ItemListQuery(req);
+                    res.ReturnStatus = new ReturnStatus(ReturnCode.SUCCESS);
+                }
+                catch (Exception ex)
+                {
+                    Log("Err=" + ex.Message);
+                    Log(ex.StackTrace);
+                    res.ReturnStatus = new ReturnStatus(ReturnCode.SERIOUS_ERROR);
+                }
             }
             var settings = new JsonSerializerSettings
             {
