@@ -1,0 +1,663 @@
+﻿@{
+    ViewBag.Title = "MergeIndex";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="card">
+    <div class="card-header">
+        <div class="form-inline">
+            <div class="col">案主合併</div>
+            <button type="button" id="query" class="btn btn-sm btn-outline-dark ml-1"><i class="fa fa-search fa-lg mr-1"></i>查詢</button>
+            <button type="button" id="save" class="btn btn-sm btn-outline-dark ml-1"><i class="fa fa-save fa-lg mr-1"></i>存檔</button>
+        </div>
+    </div>
+    <div class="card-body">
+        <!--查詢區塊-->
+        <form id="section_retrieve">
+            <div class="form-row">
+                <div class="form-group col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                    <label for="SN">序號</label>
+                    <input type="text" class="form-control form-control-sm fields" id="SN" name="SN">
+                </div>
+                <div class="form-group col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                    <label for="NAME1">稱謂</label>
+                    <input type="text" class="form-control form-control-sm fields" id="NAME1" name="NAME1">
+                </div>
+                <div class="form-group col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                    <label for="TEL1">電話</label>
+                    <input type="text" class="form-control form-control-sm fields" id="TEL1" name="TEL1">
+                </div>
+                <div class="form-group col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                    <label for="TEACHER1">接案老師</label>
+                    <input type="text" class="form-control form-control-sm fields" id="TEACHER1" name="TEACHER1">
+                </div>
+                <div class="form-group col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                    <label for="AGE">個案年齡</label>
+                    <input type="text" class="form-control form-control-sm fields" id="YEARS_OLD" name="YEARS_OLD">
+                </div>
+                <div class="form-group col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                    <label for="ADDRESS">居住地區</label>
+                    <input type="text" class="form-control form-control-sm fields" id="ADDRESS" name="ADDRESS">
+                </div>
+                <div class="form-group col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                    <label for="FAMILY">家庭狀況</label>
+                    <input type="text" class="form-control form-control-sm fields" id="FAMILY" name="FAMILY">
+                </div>
+                <div class="form-group col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                    <label for="RESIDENCE">居住狀態</label>
+                    <input type="text" class="form-control form-control-sm fields" id="RESIDENCE" name="RESIDENCE">
+                </div>
+                <div class="form-group col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                    <label for="NOTE">附註說明</label>
+                    <input type="text" class="form-control form-control-sm fields" id="NOTE" name="NOTE">
+                </div>
+                <div class="form-group col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                    <label for="PROBLEM">主述問題</label>
+                    <input type="text" class="form-control form-control-sm fields" id="PROBLEM" name="PROBLEM">
+                </div>
+                <div class="form-group col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                    <label for="EXPERIENCE">過去重要經驗</label>
+                    <input type="text" class="form-control form-control-sm fields" id="EXPERIENCE" name="EXPERIENCE">
+                </div>
+                <div class="form-group col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                    <label for="SUGGEST">對個案回饋處遇/輔導建議</label>
+                    <input type="text" class="form-control form-control-sm fields" id="SUGGEST" name="SUGGEST">
+                </div>
+
+            </div>
+
+            <div class="table-responsive">
+                <table id="gridview" class="table table-sm table-bordered table-hover table-striped">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>序號</th>
+                            <th>稱謂</th>
+                            @*<th>稱謂2</th>
+        <th>稱謂3</th>
+        <th>稱謂4</th>
+        <th>稱謂5</th>
+        <th>稱謂6</th>*@
+                            <th>電話</th>
+                            @*<th>電話2</th>
+        <th>電話3</th>
+        <th>電話4</th>
+        <th>電話5</th>
+        <th>電話6</th>*@
+                            <th>接案老師</th>
+                            @*<th>接案老師2</th>
+        <th>接案老師3</th>*@
+                            <th>個案年齡</th>
+                            <th>居住地區</th>
+                            <th>家庭狀況</th>
+                            <th>居住狀態</th>
+                            <th>附註說明</th>
+                            <th>主述問題</th>
+                            <th>過去重要經驗</th>
+                            <th>對個案回饋處遇/輔導建議</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+
+            <div id="paging_block" class="form-inline">
+                <div class="input-group input-group-sm mr-1">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">第<i id="interval">0-0</i>筆</span>
+                    </div>
+                    <div class="input-group-append">
+                        <span class="input-group-text">共<i id="rows_count">0</i>筆</span>
+                        <span class="input-group-text">耗時<i id="time_consuming">0</i>秒</span>
+                    </div>
+                </div>
+                <div class="input-group input-group-sm mr-1">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">第</span>
+                    </div>
+                    <div class="input-group-append">
+                        <select id="page_number" class="form-control-sm rounded-0"></select>
+                        <span class="input-group-text">頁</span>
+                        <span class="input-group-text">共<i id="page_count">0</i>頁</span>
+                    </div>
+                </div>
+                <div class="input-group input-group-sm mr-1">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">每頁</span>
+                    </div>
+                    <div class="input-group-append">
+                        <select id="page_size" class="form-control-sm rounded-0"></select>
+                        <span class="input-group-text">筆</span>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <!--/查詢區塊-->
+        <!--合併區塊-->
+        <form id="section_modify">
+            <table class="table table-hover table-bordered mt-3">
+                <thead>
+                    <tr>
+                        <th class="text-center align-middle">欄位名稱</th>
+                        <th colspan="2" class="text-center align-middle">資料選擇</th>
+                        <th class="text-center align-middle">合併結果</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>序號</td>
+                        <td>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="SN" id="SN0">
+                                <label class="form-check-label" for="SN0"></label>
+                            </div>
+                            <button type="button" name="undo" id="undo0" class="btn btn-sm btn-outline-dark ml-1" style="display: none;"><i class="fa fa-remove fa-lg mr-1"></i>移除</button>
+                        </td>
+                        <td>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="SN" id="SN1">
+                                <label class="form-check-label" for="SN1"></label>
+                            </div>
+                            <button type="button" name="undo" id="undo1" class="btn btn-sm btn-outline-dark ml-1" style="display: none;"><i class="fa fa-remove fa-lg mr-1"></i>移除</button>
+                        </td>
+                        <td>
+                            <input class="form-control fields" type="text" name="SN_ADD" id="SN_ADD" placeholder="請選擇存續之序號 (二擇一)" readonly>
+                            <input class="form-control fields d-none" type="text" name="SN_REMOVE" id="SN_REMOVE">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>稱謂1</td>
+                        <td>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" name="NAME1" id="NAME10">
+                                <label class="form-check-label" for="NAME10"></label>
+                            </div>
+                        </td>
+                        <td class="">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" name="NAME1" id="NAME11">
+                                <label class="form-check-label" for="NAME11"></label>
+                            </div>
+                        </td>
+                        <td>
+                            <input class="form-control fields" type="text" name="_NAME1" id="NAME1" placeholder="">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>稱謂2</td>
+                        <td>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" name="NAME2" id="NAME20">
+                                <label class="form-check-label" for="NAME20"></label>
+                            </div>
+                        </td>
+                        <td class="">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" name="NAME2" id="NAME21">
+                                <label class="form-check-label" for="NAME21"></label>
+                            </div>
+                        </td>
+                        <td>
+                            <input class="form-control fields" type="text" name="_NAME2" id="NAME2" placeholder="">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>稱謂3</td>
+                        <td>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" name="NAME3" id="NAME30">
+                                <label class="form-check-label" for="NAME30"></label>
+                            </div>
+                        </td>
+                        <td class="">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" name="NAME3" id="NAME31">
+                                <label class="form-check-label" for="NAME31"></label>
+                            </div>
+                        </td>
+                        <td>
+                            <input class="form-control fields" type="text" name="_NAME3" id="NAME3" placeholder="">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>稱謂4</td>
+                        <td>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" name="NAME4" id="NAME40">
+                                <label class="form-check-label" for="NAME40"></label>
+                            </div>
+                        </td>
+                        <td class="">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" name="NAME4" id="NAME41">
+                                <label class="form-check-label" for="NAME41"></label>
+                            </div>
+                        </td>
+                        <td>
+                            <input class="form-control fields" type="text" name="_NAME4" id="NAME4" placeholder="">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>稱謂5</td>
+                        <td>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" name="NAME5" id="NAME50">
+                                <label class="form-check-label" for="NAME50"></label>
+                            </div>
+                        </td>
+                        <td class="">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" name="NAME5" id="NAME51">
+                                <label class="form-check-label" for="NAME51"></label>
+                            </div>
+                        </td>
+                        <td>
+                            <input class="form-control fields" type="text" name="_NAME5" id="NAME5" placeholder="">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>稱謂6</td>
+                        <td>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" name="NAME6" id="NAME60">
+                                <label class="form-check-label" for="NAME60"></label>
+                            </div>
+                        </td>
+                        <td class="">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" name="NAME6" id="NAME61">
+                                <label class="form-check-label" for="NAME61"></label>
+                            </div>
+                        </td>
+                        <td>
+                            <input class="form-control fields" type="text" name="_NAME6" id="NAME6" placeholder="">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>電話1</td>
+                        <td>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" name="TEL1" id="TEL10">
+                                <label class="form-check-label" for="TEL10"></label>
+                            </div>
+                        </td>
+                        <td class="">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" name="TEL1" id="TEL11">
+                                <label class="form-check-label" for="TEL11"></label>
+                            </div>
+                        </td>
+                        <td>
+                            <input class="form-control fields" type="text" name="_TEL1" id="TEL1" placeholder="">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>電話2</td>
+                        <td>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" name="TEL2" id="TEL20">
+                                <label class="form-check-label" for="TEL20"></label>
+                            </div>
+                        </td>
+                        <td class="">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" name="TEL2" id="TEL21">
+                                <label class="form-check-label" for="TEL21"></label>
+                            </div>
+                        </td>
+                        <td>
+                            <input class="form-control fields" type="text" name="_TEL2" id="TEL2" placeholder="">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>電話3</td>
+                        <td>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" name="TEL3" id="TEL30">
+                                <label class="form-check-label" for="TEL30"></label>
+                            </div>
+                        </td>
+                        <td class="">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" name="TEL3" id="TEL31">
+                                <label class="form-check-label" for="TEL31"></label>
+                            </div>
+                        </td>
+                        <td>
+                            <input class="form-control fields" type="text" name="_TEL3" id="TEL3" placeholder="">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>電話4</td>
+                        <td>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" name="TEL4" id="TEL40">
+                                <label class="form-check-label" for="TEL40"></label>
+                            </div>
+                        </td>
+                        <td class="">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" name="TEL4" id="TEL41">
+                                <label class="form-check-label" for="TEL41"></label>
+                            </div>
+                        </td>
+                        <td>
+                            <input class="form-control fields" type="text" name="_TEL4" id="TEL4" placeholder="">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>電話5</td>
+                        <td>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" name="TEL5" id="TEL50">
+                                <label class="form-check-label" for="TEL50"></label>
+                            </div>
+                        </td>
+                        <td class="">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" name="TEL5" id="TEL51">
+                                <label class="form-check-label" for="TEL51"></label>
+                            </div>
+                        </td>
+                        <td>
+                            <input class="form-control fields" type="text" name="_TEL5" id="TEL5" placeholder="">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>電話6</td>
+                        <td>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" name="TEL6" id="TEL60">
+                                <label class="form-check-label" for="TEL60"></label>
+                            </div>
+                        </td>
+                        <td class="">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" name="TEL6" id="TEL61">
+                                <label class="form-check-label" for="TEL61"></label>
+                            </div>
+                        </td>
+                        <td>
+                            <input class="form-control fields" type="text" name="_TEL6" id="TEL6" placeholder="">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>接案老師1</td>
+                        <td>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" name="TEACHER1" id="TEACHER10">
+                                <label class="form-check-label" for="TEACHER10"></label>
+                            </div>
+                        </td>
+                        <td class="">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" name="TEACHER1" id="TEACHER11">
+                                <label class="form-check-label" for="TEACHER11"></label>
+                            </div>
+                        </td>
+                        <td>
+                            <input class="form-control fields" type="text" name="TEACHER1" id="TEACHER1" placeholder="">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>接案老師2</td>
+                        <td>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" name="TEACHER2" id="TEACHER20">
+                                <label class="form-check-label" for="TEACHER20"></label>
+                            </div>
+                        </td>
+                        <td class="">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" name="TEACHER2" id="TEACHER21">
+                                <label class="form-check-label" for="TEACHER21"></label>
+                            </div>
+                        </td>
+                        <td>
+                            <input class="form-control fields" type="text" name="TEACHER2" id="TEACHER2" placeholder="">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>接案老師3</td>
+                        <td>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" name="TEACHER3" id="TEACHER30">
+                                <label class="form-check-label" for="TEACHER30"></label>
+                            </div>
+                        </td>
+                        <td class="">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" name="TEACHER3" id="TEACHER31">
+                                <label class="form-check-label" for="TEACHER31"></label>
+                            </div>
+                        </td>
+                        <td>
+                            <input class="form-control fields" type="text" name="TEACHER3" id="TEACHER3" placeholder="">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>個案年齡</td>
+                        <td>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" name="YEARS_OLD" id="YEARS_OLD0">
+                                <label class="form-check-label" for="YEARS_OLD0"></label>
+                            </div>
+                        </td>
+                        <td class="">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" name="YEARS_OLD" id="YEARS_OLD1">
+                                <label class="form-check-label" for="YEARS_OLD1"></label>
+                            </div>
+                        </td>
+                        <td>
+                            <input class="form-control fields" type="text" name="YEARS_OLD" id="YEARS_OLD" placeholder="">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>居住地區</td>
+                        <td>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" name="ADDRESS" id="ADDRESS0">
+                                <label class="form-check-label" for="ADDRESS0"></label>
+                            </div>
+                        </td>
+                        <td class="">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" name="ADDRESS" id="ADDRESS1">
+                                <label class="form-check-label" for="ADDRESS1"></label>
+                            </div>
+                        </td>
+                        <td>
+                            <input class="form-control fields" type="text" name="ADDRESS" id="ADDRESS" placeholder="">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>家庭狀況</td>
+                        <td>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" name="FAMILY" id="FAMILY0">
+                                <label class="form-check-label" for="FAMILY0"></label>
+                            </div>
+                        </td>
+                        <td class="">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" name="FAMILY" id="FAMILY1">
+                                <label class="form-check-label" for="FAMILY1"></label>
+                            </div>
+                        </td>
+                        <td>
+                            <textarea class="form-control" name="FAMILY" id="FAMILY" rows="6"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>家庭圖</td>
+                        <td>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="FAMILY_FILE" id="FAMILY_FILE0" value="">
+                                <label class="form-check-label" for="FAMILY_FILE0">
+                                    <img src="~/img/empty.png" class="img-fluid img-thumbnail rounded mx-auto d-block mt-1" />
+                                </label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="FAMILY_FILE" id="FAMILY_FILE1" value="">
+                                <label class="form-check-label" for="FAMILY_FILE1">
+                                    <img src="~/img/empty.png" class="img-fluid img-thumbnail rounded mx-auto d-block mt-1" />
+                                </label>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" name="FAMILY_FILE" id="FAMILY_FILE" value="">
+                                <label class="form-check-label" for="FAMILY_FILE">
+                                    <img name="FAMILY_FILE" src="~/img/empty.png" class="img-fluid img-thumbnail rounded mx-auto d-block mt-1" />
+                                </label>
+                            </div>
+                        </td>
+                        @*<td>
+                <img name="FAMILY_FILE" id="FAMILY_FILE" src="~/img/upload/1050.jpg" class="img-fluid img-thumbnail rounded mx-auto d-block mt-1" />
+            </td>*@
+                    </tr>
+                    <tr>
+                        <td>居住狀態</td>
+                        <td>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" name="RESIDENCE" id="RESIDENCE0">
+                                <label class="form-check-label" for="RESIDENCE0"></label>
+                            </div>
+                        </td>
+                        <td class="">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" name="RESIDENCE" id="RESIDENCE1">
+                                <label class="form-check-label" for="RESIDENCE1"></label>
+                            </div>
+                        </td>
+                        <td>
+                            <textarea class="form-control" name="RESIDENCE" id="RESIDENCE" rows="6"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>附註說明</td>
+                        <td>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" name="NOTE" id="NOTE0">
+                                <label class="form-check-label" for="NOTE0"></label>
+                            </div>
+                        </td>
+                        <td class="">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" name="NOTE" id="NOTE1">
+                                <label class="form-check-label" for="NOTE1"></label>
+                            </div>
+                        </td>
+                        <td>
+                            <textarea class="form-control" name="NOTE" id="NOTE" rows="6"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>主述問題</td>
+                        <td>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" name="PROBLEM" id="PROBLEM0">
+                                <label class="form-check-label" for="PROBLEM0"></label>
+                            </div>
+                        </td>
+                        <td class="">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" name="PROBLEM" id="PROBLEM1">
+                                <label class="form-check-label" for="PROBLEM1"></label>
+                            </div>
+                        </td>
+                        <td>
+                            <textarea class="form-control" name="PROBLEM" id="PROBLEM" rows="6"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>過去重要經驗</td>
+                        <td>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" name="EXPERIENCE" id="EXPERIENCE0">
+                                <label class="form-check-label" for="EXPERIENCE0"></label>
+                            </div>
+                        </td>
+                        <td class="">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" name="EXPERIENCE" id="EXPERIENCE1">
+                                <label class="form-check-label" for="EXPERIENCE1"></label>
+                            </div>
+                        </td>
+                        <td>
+                            <textarea class="form-control" name="EXPERIENCE" id="EXPERIENCE" rows="6"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>對個案回饋處遇/輔導建議</td>
+                        <td>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" name="SUGGEST" id="SUGGEST0">
+                                <label class="form-check-label" for="SUGGEST0"></label>
+                            </div>
+                        </td>
+                        <td class="">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" name="SUGGEST" id="SUGGEST1">
+                                <label class="form-check-label" for="SUGGEST1"></label>
+                            </div>
+                        </td>
+                        <td>
+                            <textarea class="form-control" name="SUGGEST" id="SUGGEST" rows="6"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>併案原因及歷程記載</td>
+                        <td>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" name="MERGE_REASON" id="MERGE_REASON0">
+                                <label class="form-check-label" for="MERGE_REASON0"></label>
+                            </div>
+                        </td>
+                        <td class="">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="checkbox" name="MERGE_REASON" id="MERGE_REASON1">
+                                <label class="form-check-label" for="MERGE_REASON1"></label>
+                            </div>
+                        </td>
+                        <td>
+                            <textarea class="form-control" name="MERGE_REASON" id="MERGE_REASON" rows="6"></textarea>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </form>
+        <!--/合併區塊-->
+    </div>
+</div>
+
+<div class="modal" id="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">訊息標題</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>顯示訊息主體</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="close" class="btn btn-secondary" data-dismiss="modal">關閉</button>
+                <button type="button" id="confirm" class="btn btn-secondary" style="display: none;">確定</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/js/Merge/merge_index.js"></script>
+    <script type="text/JavaScript">
+        $(document).ready(function () {
+            MergeIndex.Page_Init();
+        });
+    </script>
+}

@@ -1,0 +1,51 @@
+﻿@using KYL_CMS.Models.DataClass
+@model KYL_CMS.Models.DataClass.ReturnStatus
+@{
+    Layout = null;
+}
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    @*<link rel="icon" href="../../../../favicon.ico">*@
+    <title>變更密碼</title>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/css/login.css" rel="stylesheet" />
+
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/messages_zh_TW.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <form id="force" action="/Main/ForceChange" method="post">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <div class="input-group-text transparent">　　輸入新密碼</div>
+                </div>
+                <input type="password" class="form-control transparent" id="PASSWORD" name="PASSWORD" placeholder="" required>
+            </div>
+            <div class="input-group mt-1">
+                <div class="input-group-prepend">
+                    <div class="input-group-text transparent">再次輸入新密碼</div>
+                </div>
+                <input type="password" class="form-control transparent" id="PASSWORD2" name="PASSWORD2" placeholder="" required>
+            </div>
+            <button class="btn btn-lg btn-success btn-block mt-3" type="submit">變更密碼</button>
+            @if (Model != null && Model.Code != ReturnCode.SUCCESS)
+            {
+                <div id="msg">@Model.Message</div>
+            }
+        </form>
+    </div>
+</body>
+</html>
+<script src="~/js/force.js"></script>
+<script type="text/JavaScript">
+    $(document).ready(function () {
+        Force.Page_Init();
+    });
+</script>

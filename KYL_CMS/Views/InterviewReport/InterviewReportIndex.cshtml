@@ -1,0 +1,54 @@
+﻿
+@{
+    ViewBag.Title = "InterviewReportIndex";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <div class="card-header">
+        <div class="form-inline">
+            <div class="col">輔導記錄明細表</div>
+            @*<button type="button" id="query" class="btn btn-sm btn-outline-dark ml-1"><i class="fa fa-search fa-lg mr-1"></i>查詢</button>*@
+            <button type="button" id="excel" class="btn btn-sm btn-outline-dark ml-1"><i class="fa fa-file-excel-o fa-lg mr-1"></i>匯出</button>
+        </div>
+    </div>
+    <div class="card-body">
+        <form id="section_retrieve" style="display: none;">
+            <div class="form-row">
+                <div class="form-group col-5 col-sm-4 col-md-4 col-lg-3 col-xl-3">
+                    <label for="DATE_RANGE">日期區間</label>
+                    <input type="text" class="form-control form-control-sm" id="DATE_RANGE" name="DATE_RANGE">
+                </div>
+            </div>
+            <input type="hidden" name="from" id="from" value="">
+            <input type="hidden" name="to" id="to" value="">
+        </form>
+    </div>
+</div>
+<div class="modal" id="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">訊息標題</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>顯示訊息主體</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="close" class="btn btn-secondary" data-dismiss="modal">關閉</button>
+                <button type="button" id="confirm" class="btn btn-secondary" style="display: none;">確定</button>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script src="~/js/InterviewReport/interview_report_index.js"></script>
+    <script type="text/JavaScript">
+        $(document).ready(function () {
+            InterviewReportIndex.Page_Init();
+        });
+    </script>
+}

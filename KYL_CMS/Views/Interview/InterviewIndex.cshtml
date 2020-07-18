@@ -1,0 +1,657 @@
+﻿
+@{
+    ViewBag.Title = "InterviewIndex";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card">
+    <div class="card-header">
+        <div class="form-inline">
+            <div class="col">輔導記錄</div>
+            <button type="button" id="query" class="btn btn-sm btn-outline-dark ml-1"><i class="fa fa-search fa-lg mr-1"></i>查詢</button>
+            <button type="button" id="return" class="btn btn-sm btn-outline-dark ml-1" style="display:none;"><i class="fa fa-arrow-left fa-lg mr-1"></i>返回</button>
+        </div>
+    </div>
+    <div class="card-body">
+        <!--查詢區塊-->
+        <form id="section_retrieve" style="display: none;">
+            <div class="form-row">
+                <div class="form-group col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                    <label for="SN">序號</label>
+                    <input type="text" class="form-control form-control-sm fields" id="SN" name="SN">
+                </div>
+                <div class="form-group col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                    <label for="NAME1">稱謂</label>
+                    <input type="text" class="form-control form-control-sm fields" id="NAME1" name="NAME1">
+                </div>
+                <div class="form-group col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                    <label for="TEL1">電話</label>
+                    <input type="text" class="form-control form-control-sm fields" id="TEL1" name="TEL1">
+                </div>
+                <div class="form-group col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                    <label for="TEACHER1">接案老師</label>
+                    <input type="text" class="form-control form-control-sm fields" id="TEACHER1" name="TEACHER1">
+                </div>
+                <div class="form-group col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                    <label for="AGE">個案年齡</label>
+                    <input type="text" class="form-control form-control-sm fields" id="YEARS_OLD" name="YEARS_OLD">
+                </div>
+                <div class="form-group col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                    <label for="ADDRESS">居住地區</label>
+                    <input type="text" class="form-control form-control-sm fields" id="ADDRESS" name="ADDRESS">
+                </div>
+                <div class="form-group col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                    <label for="FAMILY">家庭狀況</label>
+                    <input type="text" class="form-control form-control-sm fields" id="FAMILY" name="FAMILY">
+                </div>
+                <div class="form-group col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                    <label for="RESIDENCE">居住狀態</label>
+                    <input type="text" class="form-control form-control-sm fields" id="RESIDENCE" name="RESIDENCE">
+                </div>
+                <div class="form-group col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                    <label for="NOTE">附註說明</label>
+                    <input type="text" class="form-control form-control-sm fields" id="NOTE" name="NOTE">
+                </div>
+                <div class="form-group col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                    <label for="PROBLEM">主述問題</label>
+                    <input type="text" class="form-control form-control-sm fields" id="PROBLEM" name="PROBLEM">
+                </div>
+                <div class="form-group col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                    <label for="EXPERIENCE">過去重要經驗</label>
+                    <input type="text" class="form-control form-control-sm fields" id="EXPERIENCE" name="EXPERIENCE">
+                </div>
+                <div class="form-group col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                    <label for="SUGGEST">個案回饋處遇/輔導建議</label>
+                    <input type="text" class="form-control form-control-sm fields" id="SUGGEST" name="SUGGEST">
+                </div>
+                <div class="form-group col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                    <label for="CASE_STATUS">完成進度</label>
+                    <select class="form-control form-control-sm  fields" id="CASE_STATUS" name="CASE_STATUS"></select>
+                </div>
+                <div class="form-group col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                    <label for="CONTACT_TIME">聯絡時間</label>
+                    <select class="form-control form-control-sm  fields" id="CONTACT_TIME" name="CONTACT_TIME"></select>
+                </div>
+                <div class="form-group col-5 col-sm-4 col-md-4 col-lg-3 col-xl-3">
+                    <label for="DATE_RANGE">接線日期時間</label>
+                    <input type="text" class="form-control form-control-sm" id="DATE_RANGE" name="DATE_RANGE">
+                </div>
+                <div class="form-group col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                    <label for="NAME">輔導記錄稱謂</label>
+                    <input type="text" class="form-control form-control-sm fields" id="NAME" name="NAME">
+                </div>
+                <div class="form-group col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                    <label for="TEL">輔導記錄電話</label>
+                    <input type="text" class="form-control form-control-sm fields" id="TEL" name="TEL">
+                </div>
+                <div class="form-group  col-6 col-sm-6 col-md-4 col-lg-3 col-xl-4">
+                    <label for="ORDER_BY">排序欄位</label>
+                    <div class="form-inline">
+                        <select class="form-control form-control-sm fields" id="ORDER_BY" name="ORDER_BY">
+                            <option value="SN">序號</option>
+                            <option value="TEL1">電話1</option>
+                            <option value="TEL2">電話2</option>
+                            <option value="TEL3">電話3</option>
+                            <option value="TEL4">電話4</option>
+                            <option value="TEL5">電話5</option>
+                            <option value="TEL6">電話6</option>
+                            <option value="NAME1">稱謂1</option>
+                            <option value="NAME2">稱謂2</option>
+                            <option value="NAME3">稱謂3</option>
+                            <option value="NAME4">稱謂4</option>
+                            <option value="NAME5">稱謂5</option>
+                            <option value="NAME6">稱謂6</option>
+                            <option value="TEACHER1">接線老師1</option>
+                            <option value="TEACHER2">接線老師2</option>
+                            <option value="TEACHER3">接線老師3</option>
+                        </select>
+                        <select class="form-control form-control-sm  fields" id="ASC_DESC" name="ASC_DESC">
+                            <option value="DESC">由大到小</option>
+                            <option value="ASC">由小到大</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table id="gridview" class="table table-sm table-bordered table-hover table-striped">
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>序號</th>
+                            <th>稱謂</th>
+                            @*<th>稱謂2</th>
+                                <th>稱謂3</th>
+                                <th>稱謂4</th>
+                                <th>稱謂5</th>
+                                <th>稱謂6</th>*@
+                            <th>電話</th>
+                            @*<th>電話2</th>
+                                <th>電話3</th>
+                                <th>電話4</th>
+                                <th>電話5</th>
+                                <th>電話6</th>*@
+                            <th>接案老師</th>
+                            @*<th>接案老師2</th>
+                                <th>接案老師3</th>*@
+                            <th>個案年齡</th>
+                            <th>居住地區</th>
+                            <th>家庭狀況</th>
+                            <th>居住狀態</th>
+                            <th>附註說明</th>
+                            <th>主述問題</th>
+                            <th>過去重要經驗</th>
+                            <th>對個案回饋處遇/輔導建議</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+
+            <div id="paging_block" class="form-inline">
+                <div class="input-group input-group-sm mr-1">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">第<i id="interval">0-0</i>筆</span>
+                    </div>
+                    <div class="input-group-append">
+                        <span class="input-group-text">共<i id="rows_count">0</i>筆</span>
+                        <span class="input-group-text">耗時<i id="time_consuming">0</i>秒</span>
+                    </div>
+                </div>
+                <div class="input-group input-group-sm mr-1">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">第</span>
+                    </div>
+                    <div class="input-group-append">
+                        <select id="page_number" class="form-control-sm rounded-0"></select>
+                        <span class="input-group-text">頁</span>
+                        <span class="input-group-text">共<i id="page_count">0</i>頁</span>
+                    </div>
+                </div>
+                <div class="input-group input-group-sm mr-1">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">每頁</span>
+                    </div>
+                    <div class="input-group-append">
+                        <select id="page_size" class="form-control-sm rounded-0"></select>
+                        <span class="input-group-text">筆</span>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <!--/查詢區塊-->
+        <!--修改區塊-->
+        <form id="section_modify" style="display: none;">
+            <!--個案摘要-->
+            <div id="master_sectoin">
+                <div class="form-row">
+                    <div class="form-group col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                        <label for="SN">序號</label>
+                        <input type="text" class="form-control form-control-sm fields" name="SN" placeholder="系統自動產生" disabled>
+                    </div>
+                    <div class="form-group col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                        <label for="YEARS_OLD">個案年齡</label>
+                        <input type="text" class="form-control form-control-sm fields" name="YEARS_OLD" disabled>
+                    </div>
+                    <div class="form-group col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                        <label for="ADDRESS">居住地區</label>
+                        <input type="text" class="form-control form-control-sm fields" name="ADDRESS" disabled>
+                    </div>
+                    <div class="form-group col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                        <label for="TEACHER1">接案老師1</label>
+                        <input type="text" class="form-control form-control-sm fields" name="TEACHER1" disabled>
+                    </div>
+                    <div class="form-group col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                        <label for="TEACHER2">接案老師2</label>
+                        <input type="text" class="form-control form-control-sm fields" name="TEACHER2" disabled>
+                    </div>
+                    <div class="form-group col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                        <label for="TEACHER3">接案老師3</label>
+                        <input type="text" class="form-control form-control-sm fields" name="TEACHER3" disabled>
+                    </div>
+                    <div class="w-100"></div>
+                    <div class="form-group col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                        <label for="NAME1">稱謂1</label>
+                        <input type="text" class="form-control form-control-sm fields" name="NAME1" disabled>
+                    </div>
+                    <div class="form-group col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                        <label for="NAME2">稱謂2</label>
+                        <input type="text" class="form-control form-control-sm fields" name="NAME2" disabled>
+                    </div>
+                    <div class="form-group col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                        <label for="NAME3">稱謂3</label>
+                        <input type="text" class="form-control form-control-sm fields" name="NAME3" disabled>
+                    </div>
+                    <div class="form-group col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                        <label for="NAME4">稱謂4</label>
+                        <input type="text" class="form-control form-control-sm fields" name="NAME4" disabled>
+                    </div>
+                    <div class="form-group col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                        <label for="NAME5">稱謂5</label>
+                        <input type="text" class="form-control form-control-sm fields" name="NAME5" disabled>
+                    </div>
+                    <div class="form-group col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                        <label for="NAME6">稱謂6</label>
+                        <input type="text" class="form-control form-control-sm fields" name="NAME6" disabled>
+                    </div>
+                    <div class="form-group col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                        <label for="TEL1">電話1</label>
+                        <input type="text" class="form-control form-control-sm fields" name="TEL1" disabled>
+                    </div>
+                    <div class="form-group col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                        <label for="TEL2">電話2</label>
+                        <input type="text" class="form-control form-control-sm fields" name="TEL2" disabled>
+                    </div>
+                    <div class="form-group col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                        <label for="TEL3">電話3</label>
+                        <input type="text" class="form-control form-control-sm fields" name="TEL3" disabled>
+                    </div>
+                    <div class="form-group col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                        <label for="TEL4">電話4</label>
+                        <input type="text" class="form-control form-control-sm fields" name="TEL4" disabled>
+                    </div>
+                    <div class="form-group col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                        <label for="TEL5">電話5</label>
+                        <input type="text" class="form-control form-control-sm fields" name="TEL5" disabled>
+                    </div>
+                    <div class="form-group col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                        <label for="TEL6">電話6</label>
+                        <input type="text" class="form-control form-control-sm fields" name="TEL6" disabled>
+                    </div>
+                    <div class="w-100"></div>
+                    <div class="form-group col-lg-6">
+                        <div class="form-group">
+                            <label for="FAMILY">家庭狀況</label>
+                            <textarea class="form-control form-control-sm fields" rows="6" name="FAMILY" disabled></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="RESIDENCE">居住狀態</label>
+                            <textarea class="form-control form-control-sm fields" rows="6" name="RESIDENCE" disabled></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-6">
+                        家庭圖
+                        <img name="FAMILY_FILE" src="" class="img-fluid img-thumbnail rounded mx-auto d-block mt-1" style="max-height:300px;" />
+                    </div>
+                    <div class="form-group col-12">
+                        <label for="NOTE">附註說明</label>
+                        <textarea class="form-control form-control-sm fields" rows="3" name="NOTE" disabled></textarea>
+                    </div>
+                    <div class="form-group col-12">
+                        <label for="PROBLEM">主述問題</label>
+                        <textarea class="form-control form-control-sm fields" rows="3" name="PROBLEM" disabled></textarea>
+                    </div>
+                    <div class="form-group col-12">
+                        <label for="EXPERIENCE">過去重要經驗</label>
+                        <textarea class="form-control form-control-sm fields" rows="3" name="EXPERIENCE" disabled></textarea>
+                    </div>
+                    <div class="form-group col-12">
+                        <label for="SUGGEST">對個案回饋處遇/輔導建議</label>
+                        <textarea class="form-control form-control-sm fields" rows="3" name="SUGGEST" disabled></textarea>
+                    </div>
+                    <div class="form-group col-12">
+                        <label for="MERGE_REASON">併案原因及歷程記載</label>
+                        <textarea class="form-control form-control-sm fields" rows="3" name="MERGE_REASON" disabled></textarea>
+                    </div>
+                    <div class="w-100"></div>
+                    <div class="form-group mb-0 col-md-4 col-lg-2">
+                        <label class="col-form-label-sm mb-0" for="CDATE">建檔時間</label>
+                        <input name="CDATE" type="text" class="form-control form-control-sm fields" placeholder="系統自動產生" disabled />
+                    </div>
+                    <div class="form-group mb-0 col-md-4 col-lg-2">
+                        <label class="col-form-label-sm mb-0" for="CUSER">建檔人員</label>
+                        <input name="CUSER" type="text" class="form-control form-control-sm fields" placeholder="系統自動產生" disabled />
+                    </div>
+                    <div class="form-group mb-0 col-md-4 col-lg-2">
+                        <label class="col-form-label-sm mb-0" for="MDATE">異動時間</label>
+                        <input name="MDATE" type="text" class="form-control form-control-sm fields" placeholder="系統自動產生" disabled />
+                    </div>
+                    <div class="form-group mb-0 col-md-4 col-lg-2">
+                        <label class="col-form-label-sm mb-0" for="MUSER">異動人員</label>
+                        <input name="MUSER" type="text" class="form-control form-control-sm fields" placeholder="系統自動產生" disabled />
+                    </div>
+                </div>
+            </div>
+            <!--/個案摘要-->
+            <!--輔導記錄-->
+            <div id="detail_section" class="mt-3">
+                <div class="table-responsive">
+                    <table id="detail_gridview" class="table table-sm table-bordered table-hover table-striped">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>輔導記錄流水號</th>
+                                <th>曾經來電記錄</th>
+                                <th>談話時間(分鐘)</th>
+                                <th>接線者</th>
+                                <th>主述問題分類</th>
+                                <th>完成進度</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+            <!--輔導記錄-->
+            <!--輔導記錄樣版-->
+            <div style="display:none;">
+                <div id="detail_template" class="mt-1" data-row="" data-index="">
+                    <input type="text" class="d-none fields" name="SN" />
+                    <div class="form-row">
+                        <div class="form-group col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                            <label class="font-weight-bold" for="VOLUNTEER_SN">一、此次接線者</label>
+                            <select class="form-control form-control-sm border-success fields" name="VOLUNTEER_SN" disabled></select>
+                        </div>
+                        <div class="form-group col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                            <label class="font-weight-bold" for="INCOMING_DATE">二、此次接線時間</label>
+                            <input type="text" class="form-control form-control-sm border-success fields dates" name="INCOMING_DATE">
+                        </div>
+                        <div class="form-group col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                            <label for="DURING">談話時間(分鐘)</label>
+                            <input type="text" class="form-control form-control-sm border-success fields" name="DURING" value="0">
+                        </div>
+                        <div class="form-group col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                            <label class="font-weight-bold" for="CASE_NO">三、輔導記錄流水號</label>
+                            <input type="text" class="form-control form-control-sm fields" name="CASE_NO" placeholder="系統自動產生" disabled>
+                        </div>
+                        <div class="form-group col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                            <label class="font-weight-bold" for="NAME">四、此次來電者姓名</label>
+                            <input type="text" class="form-control form-control-sm border-success fields" name="NAME">
+                        </div>
+                        <div class="form-group col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                            <label for="TEL">此次來電者電話</label>
+                            <input type="text" class="form-control form-control-sm border-success fields" name="TEL">
+                        </div>
+                        <div class="font-weight-bold form-group col-12">
+                            五、來電者基本資料之圈選
+                        </div>
+                        <div class="form-group col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                            <label for="CONTACT_TIME">聯絡時間</label>
+                            <select name="CONTACT_TIME" class="form-control form-control-sm border-success fields"></select>
+                        </div>
+                        <div class="form-group col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                            <label for="TREATMENT">處遇方式</label>
+                            <select name="TREATMENT" class="form-control form-control-sm border-success fields"></select>
+                        </div>
+                        <div class="form-group col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                            <label for="TREATMENT_MEMO">處遇方式說明</label>
+                            <input type="text" class="form-control form-control-sm fields" name="TREATMENT_MEMO">
+                        </div>
+                        <div class="form-group col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                            <label for="CASE_SOURCE">個案來源</label>
+                            <select name="CASE_SOURCE" class="form-control form-control-sm border-success fields"></select>
+                        </div>
+                        <div class="form-group col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                            <label for="CASE_SOURCE_MEMO">個案來源說明</label>
+                            <input type="text" class="form-control form-control-sm fields" name="CASE_SOURCE_MEMO">
+                        </div>
+                        <div class="form-group col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                            <label for="GENDER">主述性別</label>
+                            <select name="GENDER" class="form-control form-control-sm border-success fields"></select>
+                        </div>
+                        <div class="form-group col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                            <label for="AGE">年齡層</label>
+                            <select name="AGE" class="form-control form-control-sm border-success fields"></select>
+                        </div>
+                        <div class="form-group col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                            <label for="EDUCATION">學歷</label>
+                            <select name="EDUCATION" class="form-control form-control-sm border-success fields"></select>
+                        </div>
+                        <div class="form-group col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                            <label for="CAREER">職業</label>
+                            <select name="CAREER" class="form-control form-control-sm border-success fields"></select>
+                        </div>
+                        <div class="form-group col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                            <label for="CAREER_MEMO">職業說明</label>
+                            <input type="text" class="form-control form-control-sm fields" name="CAREER_MEMO">
+                        </div>
+                        <div class="form-group col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                            <label for="CITY">居住地</label>
+                            <select name="CITY" class="form-control form-control-sm border-success fields"></select>
+                        </div>
+                        <div class="form-group col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                            <label for="MARRIAGE">目前婚姻感情狀態</label>
+                            <select name="MARRIAGE" class="form-control form-control-sm border-success fields"></select>
+                        </div>
+                        <div class="form-group col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                            <label for="MARRIAGE_MEMO">目前婚姻感情狀態說明</label>
+                            <input type="text" class="form-control form-control-sm fields" name="MARRIAGE_MEMO">
+                        </div>
+                        <div class="form-group col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                            <label for="PHYSIOLOGY">生理障礙</label>
+                            <select name="PHYSIOLOGY" class="form-control form-control-sm border-success fields"></select>
+                        </div>
+                        <div class="form-group col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                            <label for="PHYSIOLOGY_MEMO">生理障礙說明</label>
+                            <input type="text" class="form-control form-control-sm fields" name="PHYSIOLOGY_MEMO">
+                        </div>
+                        <div class="form-group col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                            <label for="PSYCHOLOGY">心理障礙</label>
+                            <select name="PSYCHOLOGY" class="form-control form-control-sm border-success fields"></select>
+                        </div>
+                        <div class="form-group col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                            <label for="PSYCHOLOGY_MEMO">心理障礙說明</label>
+                            <input type="text" class="form-control form-control-sm fields" name="PSYCHOLOGY_MEMO">
+                        </div>
+                        <div class="form-group col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+                            <label for="VISITED">是否曾經來電</label>
+                            <select name="VISITED" class="form-control form-control-sm border-success fields"></select>
+                        </div>
+                        <div class="w-100"></div>
+                        <div class="form-group col-12">
+                            <span class="checkboxs text-success mr-2">特殊身份別 (必選且可複選)</span>
+                        </div>
+                        <div name="special_identity" class="form-row col-12"></div>
+                        <div class="form-group col-12">
+                            <label class="font-weight-bold" for="FAMILY">六、家庭狀況描述</label>
+                            <textarea class="form-control form-control-sm fields" rows="3" id="FAMILY" name="FAMILY"></textarea>
+                        </div>
+                        <div class="form-group col-12">
+                            <label class="font-weight-bold" for="EXPERIENCE">七、過去重要經驗</label>
+                            <textarea class="form-control form-control-sm fields" rows="3" id="EXPERIENCE" name="EXPERIENCE"></textarea>
+                        </div>
+                        <div class="form-group col-12">
+                            <label class="font-weight-bold" for="HARASS">八、案主此次主述困擾事件</label>
+                            <textarea class="form-control form-control-sm fields" rows="3" id="HARASS" name="HARASS"></textarea>
+                        </div>
+                        <div class="font-weight-bold form-group col-12">
+                            <span class="checkboxs mr-2">九、來電者主述問題分類之圈選 (至少勾選兩個以上)</span>
+                        </div>
+                        <div name="interview_classify" class="form-group col-12 text-success"></div>
+                        <div class="w-100"></div>
+                        <div class="form-group col-12 col-md-8 col-lg-6 col-xl-4">
+                            <label class="font-weight-bold" for="SOLVE_DEGREE">十、案主解決問題的程度</label>
+                            <select id="SOLVE_DEGREE" name="SOLVE_DEGREE" class="form-control form-control-sm border-success fields"></select>
+                        </div>
+                        <div class="font-weight-bold form-group col-12">
+                            十一、案主問題概念化
+                        </div>
+                        <div class="form-group col-12">
+                            1. 案主在此困擾的想法/認知
+                        </div>
+                        <div class="form-group col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                            <label for="ABOUT_SELF">關於自己的</label>
+                            <textarea class="form-control form-control-sm fields" rows="3" id="ABOUT_SELF" name="ABOUT_SELF"></textarea>
+                        </div>
+                        <div class="form-group col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                            <label for="ABOUT_OTHERS">關於他人的</label>
+                            <textarea class="form-control form-control-sm fields" rows="3" id="ABOUT_OTHERS" name="ABOUT_OTHERS"></textarea>
+                        </div>
+                        <div class="form-group col-12">
+                            <span class="checkboxs mr-2">2. 案主在此困擾的情緒 (必選且可複選)</span>
+                        </div>
+                        <div name="feeling" class="form-group col-12 text-success"></div>
+                        <div class="form-group col-12">
+                            <label for="FEELING_MEMO">備註說明</label>
+                            <input type="text" class="form-control form-control-sm fields" id="FEELING_MEMO" name="FEELING_MEMO">
+                        </div>
+                        <div class="form-group col-12">
+                            <label for="BEHAVIOR">3. 案主在此困擾的行為</label>
+                            <textarea class="form-control form-control-sm fields" rows="3" id="BEHAVIOR" name="BEHAVIOR"></textarea>
+                        </div>
+                        <div class="form-group col-12">
+                            <label for="INNER_DEMAND">4. 案主在此困擾的內在需求</label>
+                            <textarea class="form-control form-control-sm fields" rows="3" id="INNER_DEMAND" name="INNER_DEMAND"></textarea>
+                        </div>
+                        <div class="form-group col-12">
+                            <label for="ADDITION">5. 其他補述說明</label>
+                            <textarea class="form-control form-control-sm fields" rows="3" id="ADDITION" name="ADDITION"></textarea>
+                        </div>
+                        <div class="font-weight-bold form-group col-12">
+                            <span class="checkboxs mr-2">十二、接案過程介入方式 (必選且可複選)</span>
+                        </div>
+                        <div name="intervention" class="form-group col-12 text-success"></div>
+                        <div class="form-group col-12">
+                            <label for="INTERVENTION_MEMO">備註說明</label>
+                            <textarea class="form-control form-control-sm fields" rows="3" id="INTERVENTION_MEMO" name="INTERVENTION_MEMO"></textarea>
+                        </div>
+                        <div class="font-weight-bold form-group col-12">
+                            十三、輔導員自我評量表 ( 請依您的符合程度勾選適當的空格 )
+                        </div>
+                        <div class="form-group col-xs-12 col-sm-11 col-md-10 col-lg-8 col-xl-7 table-responsive">
+                            <table class="table table-sm table-bordered table-hover table-striped">
+                                <thead>
+                                    <tr>
+                                        <th rowspan="3" class="align-middle text-center">題項</th>
+                                        <th colspan="6">
+                                            <div class="d-flex justify-content-between">
+                                                <div>
+                                                    非常符合
+                                                </div>
+                                                <div>
+                                                    非常不符合
+                                                </div>
+                                            </div>
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <th colspan="6" class="text-center"><img src="~/img/arrow-h.png" style="width:90%; height:25px;" /></th>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-center">6</th>
+                                        <th class="text-center">5</th>
+                                        <th class="text-center">4</th>
+                                        <th class="text-center">3</th>
+                                        <th class="text-center">2</th>
+                                        <th class="text-center">1</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td><span class="text-success mr-2">一、真心關心當事人</span></td><td class="text-center"><input type="radio" class="fields" name="OPINION01" value="6"></td><td class="text-center"><input type="radio" class="fields" name="OPINION01" value="5"></td><td class="text-center"><input type="radio" class="fields" name="OPINION01" value="4"></td><td class="text-center"><input type="radio" class="fields" name="OPINION01" value="3"></td><td class="text-center"><input type="radio" class="fields" name="OPINION01" value="2"></td><td class="text-center"><input type="radio" class="fields" name="OPINION01" value="1"></td></tr>
+                                    <tr><td><span class="text-success mr-2">二、能接納當事人</span></td><td class="text-center"><input type="radio" class="fields" name="OPINION02" value="6"></td><td class="text-center"><input type="radio" class="fields" name="OPINION02" value="5"></td><td class="text-center"><input type="radio" class="fields" name="OPINION02" value="4"></td><td class="text-center"><input type="radio" class="fields" name="OPINION02" value="3"></td><td class="text-center"><input type="radio" class="fields" name="OPINION02" value="2"></td><td class="text-center"><input type="radio" class="fields" name="OPINION02" value="1"></td></tr>
+                                    <tr><td><span class="text-success mr-2">三、能引導當事人充分的敘說</span></td><td class="text-center"><input type="radio" class="fields" name="OPINION03" value="6"></td><td class="text-center"><input type="radio" class="fields" name="OPINION03" value="5"></td><td class="text-center"><input type="radio" class="fields" name="OPINION03" value="4"></td><td class="text-center"><input type="radio" class="fields" name="OPINION03" value="3"></td><td class="text-center"><input type="radio" class="fields" name="OPINION03" value="2"></td><td class="text-center"><input type="radio" class="fields" name="OPINION03" value="1"></td></tr>
+                                    <tr><td><span class="text-success mr-2">四、與當事人建立有助益的關係</span></td><td class="text-center"><input type="radio" class="fields" name="OPINION04" value="6"></td><td class="text-center"><input type="radio" class="fields" name="OPINION04" value="5"></td><td class="text-center"><input type="radio" class="fields" name="OPINION04" value="4"></td><td class="text-center"><input type="radio" class="fields" name="OPINION04" value="3"></td><td class="text-center"><input type="radio" class="fields" name="OPINION04" value="2"></td><td class="text-center"><input type="radio" class="fields" name="OPINION04" value="1"></td></tr>
+                                    <tr><td><span class="text-success mr-2">五、建立明確的協談目標</span></td><td class="text-center"><input type="radio" class="fields" name="OPINION05" value="6"></td><td class="text-center"><input type="radio" class="fields" name="OPINION05" value="5"></td><td class="text-center"><input type="radio" class="fields" name="OPINION05" value="4"></td><td class="text-center"><input type="radio" class="fields" name="OPINION05" value="3"></td><td class="text-center"><input type="radio" class="fields" name="OPINION05" value="2"></td><td class="text-center"><input type="radio" class="fields" name="OPINION05" value="1"></td></tr>
+                                    <tr><td><span class="text-success mr-2">六、充分了解當事人的問題</span></td><td class="text-center"><input type="radio" class="fields" name="OPINION06" value="6"></td><td class="text-center"><input type="radio" class="fields" name="OPINION06" value="5"></td><td class="text-center"><input type="radio" class="fields" name="OPINION06" value="4"></td><td class="text-center"><input type="radio" class="fields" name="OPINION06" value="3"></td><td class="text-center"><input type="radio" class="fields" name="OPINION06" value="2"></td><td class="text-center"><input type="radio" class="fields" name="OPINION06" value="1"></td></tr>
+                                    <tr><td><span class="text-success mr-2">七、純熟的協談技巧</span></td><td class="text-center"><input type="radio" class="fields" name="OPINION07" value="6"></td><td class="text-center"><input type="radio" class="fields" name="OPINION07" value="5"></td><td class="text-center"><input type="radio" class="fields" name="OPINION07" value="4"></td><td class="text-center"><input type="radio" class="fields" name="OPINION07" value="3"></td><td class="text-center"><input type="radio" class="fields" name="OPINION07" value="2"></td><td class="text-center"><input type="radio" class="fields" name="OPINION07" value="1"></td></tr>
+                                    <tr><td><span class="text-success mr-2">八、清晰的協談意圖</span></td><td class="text-center"><input type="radio" class="fields" name="OPINION08" value="6"></td><td class="text-center"><input type="radio" class="fields" name="OPINION08" value="5"></td><td class="text-center"><input type="radio" class="fields" name="OPINION08" value="4"></td><td class="text-center"><input type="radio" class="fields" name="OPINION08" value="3"></td><td class="text-center"><input type="radio" class="fields" name="OPINION08" value="2"></td><td class="text-center"><input type="radio" class="fields" name="OPINION08" value="1"></td></tr>
+                                    <tr><td><span class="text-success mr-2">九、能訂定適當的輔導方向</span></td><td class="text-center"><input type="radio" class="fields" name="OPINION09" value="6"></td><td class="text-center"><input type="radio" class="fields" name="OPINION09" value="5"></td><td class="text-center"><input type="radio" class="fields" name="OPINION09" value="4"></td><td class="text-center"><input type="radio" class="fields" name="OPINION09" value="3"></td><td class="text-center"><input type="radio" class="fields" name="OPINION09" value="2"></td><td class="text-center"><input type="radio" class="fields" name="OPINION09" value="1"></td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="form-group col-12">
+                            <label class="font-weight-bold" style="color:#00ffcc" for="OPINION">十四、接案者心得</label>
+                            <textarea class="form-control form-control-sm fields" rows="3" id="OPINION" name="OPINION" style="border-color:#00ffcc"></textarea>
+                        </div>
+                        <div class="font-weight-bold form-group col-12">
+                            ＊完成進度
+                        </div>
+                        <div name="case_status" class="form-group col-12"></div>
+                        <div class="w-100"></div>
+                        <div class="form-group mb-0 col-md-4 col-lg-2">
+                            <label class="col-form-label-sm mb-0" for="CDATE">建檔時間</label>
+                            <input name="CDATE" type="text" class="form-control form-control-sm fields modify" placeholder="系統自動產生" disabled />
+                        </div>
+                        <div class="form-group mb-0 col-md-4 col-lg-2">
+                            <label class="col-form-label-sm mb-0" for="CUSER">建檔人員</label>
+                            <input name="CUSER" type="text" class="form-control form-control-sm fields modify" placeholder="系統自動產生" disabled />
+                        </div>
+                        <div class="form-group mb-0 col-md-4 col-lg-2">
+                            <label class="col-form-label-sm mb-0" for="MDATE">異動時間</label>
+                            <input name="MDATE" type="text" class="form-control form-control-sm fields modify" placeholder="系統自動產生" disabled />
+                        </div>
+                        <div class="form-group mb-0 col-md-4 col-lg-2">
+                            <label class="col-form-label-sm mb-0" for="CUSER">異動人員</label>
+                            <input name="MUSER" type="text" class="form-control form-control-sm fields modify" placeholder="系統自動產生" disabled />
+                        </div>
+                    </div>
+                </div>                
+            </div>
+            <!--/輔導記錄樣版-->
+        </form>
+        <!--/修改區塊-->
+    </div>
+</div>
+
+<div class="modal" id="modal" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">訊息標題</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>顯示訊息主體</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="close" class="btn btn-secondary" data-dismiss="modal">關閉</button>
+                <button type="button" id="confirm" class="btn btn-secondary" style="display: none;">確定</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="detail_modal" role="dialog" data-backdrop="static">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"></h5>
+                <button type="button" id="detail_x" class="close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                @*<button type="button" id="detail_x" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>*@
+            </div>
+            <div class="modal-body font-weight-bold">
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="detail_save" class="btn btn-danger font-weight-bold">　　　　存檔　　　　</button>
+                @*<button type="button" id="detail_close" class="btn btn-secondary" data-dismiss="modal">取消</button>*@
+                <button type="button" id="detail_close" class="btn btn-secondary">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="alert_modal" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">訊息標題</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>顯示訊息主體</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="alert_cancel" class="btn btn-secondary">不存檔離開</button>
+                <button type="button" id="alert_back" class="btn btn-secondary" data-dismiss="modal">返回繼續編輯</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/js/Interview/Interview_index.js"></script>
+    <script type="text/JavaScript">
+        $(document).ready(function () {
+            InterviewIndex.UserId = '@User.Identity.Name';
+            InterviewIndex.Page_Init();
+        });
+    </script>
+}

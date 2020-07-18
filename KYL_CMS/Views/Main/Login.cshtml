@@ -1,0 +1,51 @@
+﻿@using KYL_CMS.Models.DataClass
+@model KYL_CMS.Models.DataClass.ReturnStatus
+@{
+    Layout = null;
+}
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    @*<link rel="icon" href="../../../../favicon.ico">*@
+    <title>個案管理系統</title>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/css/login.css" rel="stylesheet" />
+
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/messages_zh_TW.min.js"></script>
+</head>
+<body>
+    <div class="container bg-img">
+        <form id="login" action="/Main/Login" method="post">
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <div class="input-group-text transparent"><span class="fa fa-user fa-fw"></span></div>
+                </div>
+                <input type="text" class="form-control transparent" id="account" name="account" placeholder="請輸入帳號" required autofocus>
+            </div>
+            <div class="input-group mt-1">
+                <div class="input-group-prepend">
+                    <div class="input-group-text transparent"><span class="fa fa-lock fa-fw"></span></div>
+                </div>
+                <input type="password" class="form-control transparent" id="password" name="password" placeholder="請輸入密碼" required autofocus>
+            </div>
+            <button class="btn btn-lg btn-success btn-block mt-3" type="submit">登入系統</button>
+            @if (Model != null && Model.Code != ReturnCode.SUCCESS)
+            {
+                <div id="msg">@Model.Message</div>
+            }
+            </form>
+    </div>
+</body>
+</html>
+<script src="~/js/login.js"></script>
+<script type="text/JavaScript">
+    $(document).ready(function () {
+        Login.Page_Init();
+    });
+</script>

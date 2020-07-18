@@ -1,0 +1,26 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+<div class="form-group col-6 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+    <label for="AGE">個案年齡</label>
+    <input type="text" class="form-control form-control-sm fields" id="AGE" name="AGE">
+</div>
+
+@section Scripts{
+    <script type="text/JavaScript">
+        $('#AGE').daterangepicker({
+            singleDatePicker: true,
+            showDropdowns: true,
+            timePicker: true,
+            timePicker24Hour: true,
+            locale: { format: 'YYYY/MM/DD HH:mm', applyLabel: '確認', cancelLabel: '取消' }
+        }, function (start, end, label) {
+            //var years = moment().diff(start, 'years');
+            //alert("You are " + years + " years old!");
+        });
+    </script>
+}

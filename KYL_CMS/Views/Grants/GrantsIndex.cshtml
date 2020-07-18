@@ -1,0 +1,81 @@
+﻿@{
+    ViewBag.Title = "GrantsIndex";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="card">
+    <div class="card-header">
+        <div class="form-inline">
+            <div class="col">帳號群組設定</div>
+            <button type="button" id="save" class="btn btn-sm btn-outline-dark ml-1"><i class="fa fa-save fa-lg mr-1"></i>存檔</button>
+            <button type="button" id="undo" class="btn btn-sm btn-outline-dark ml-1"><i class="fa fa-undo fa-lg mr-1"></i>復原</button>
+        </div>
+    </div>
+    <div class="card-body">
+        <form id="section_modify">
+            
+            <div class="form-group col-12 d-none">設定方式</div>
+            <div class="form-group col-12 d-none">
+                <label class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="mode" id="users" value="帳號">帳號
+                </label>
+                <label class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="mode" id="roles" value="群組">群組
+                </label>
+            </div>
+            <div class="form-group col-12">選擇<span id="action"></span></div>
+            <div class="form-group col-6 col-sm-6 col-md-5 col-lg-4 col-xl-3">
+                <select name="users_roles" class="form-control form-control-sm fields"></select>
+            </div>
+            <div class="form-group col-12">
+                <div class="form-row">
+                    <div class="form-group col-3">
+                        <label for="list1">已加入</label>
+                        <select multiple class="form-control" id="joined" size="8"></select>
+                    </div>
+                    <div class="form-group">
+                        <div class="row h-100">
+                            <div class="col my-auto">
+                                <div class="form-group">
+                                    <button type="button" class="btn btn-success" id="add"><i class="fa fa-arrow-left mr-1"></i>加入</button>
+                                </div>
+                                <div class="form-group">
+                                    <button type="button" class="btn btn-warning" id="remove">移除<i class="fa fa-arrow-right ml-1"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-3">
+                        <label for="list2">未加入</label>
+                        <select multiple class="form-control" id="unjoin" size="8"></select>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="modal" id="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">訊息標題</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>顯示訊息主體</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="close" class="btn btn-secondary" data-dismiss="modal">關閉</button>
+                <button type="button" id="confirm" class="btn btn-secondary" style="display: none;">確定</button>
+            </div>
+        </div>
+    </div>
+</div>@section Scripts{
+    <script src="~/js/Grants/grants_index.js"></script>
+    <script type="text/JavaScript">
+        $(document).ready(function () {
+            GrantsIndex.Page_Init();
+        });
+    </script>
+}
