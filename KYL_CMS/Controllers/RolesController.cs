@@ -16,13 +16,13 @@ namespace KYL_CMS.Controllers
 {
     public class RolesController : BaseController
     {
-        [Authorize]
+        ////[Authorize]
         public ActionResult RolesIndex()
         {
             return View();
         }
 
-        [Authorize]
+        ////[Authorize]
         [AcceptVerbs("POST")]
         public string RolesRetrieve(RolesRetrieveReq req)
         {
@@ -44,7 +44,7 @@ namespace KYL_CMS.Controllers
             return json;
         }
 
-        [Authorize]
+        ////[Authorize]
         [AcceptVerbs("POST")]
         public string RolesQuery(RolesModifyReq req)
         {
@@ -69,7 +69,7 @@ namespace KYL_CMS.Controllers
             return json;
         }
 
-        [Authorize]
+        ////[Authorize]
         [AcceptVerbs("POST")]
         public string RolesUpdate(RolesModifyReq req)
         {
@@ -97,7 +97,7 @@ namespace KYL_CMS.Controllers
             return json;
         }
 
-        [Authorize]
+        ////[Authorize]
         [AcceptVerbs("POST")]
         public string RolesDelete(RolesModifyReq req)
         {
@@ -124,7 +124,7 @@ namespace KYL_CMS.Controllers
             return json;
         }
 
-        [Authorize]
+        ////[Authorize]
         [AcceptVerbs("POST")]
         public string RolesCreate()
         {
@@ -160,7 +160,7 @@ namespace KYL_CMS.Controllers
             return json;
         }
 
-        [Authorize]
+        ////[Authorize]
         [AcceptVerbs("POST", "GET")]
         public ActionResult RolesExcel()
         {

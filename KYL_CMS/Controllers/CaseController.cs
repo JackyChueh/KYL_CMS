@@ -17,13 +17,13 @@ namespace KYL_CMS.Controllers
     public class CaseController : BaseController
     {
         // GET: Case
-        [Authorize]
+        ////[Authorize]
         public ActionResult CaseIndex()
         {
             return View();
         }
 
-        [Authorize]
+        ////[Authorize]
         [AcceptVerbs("POST")]
         public string CaseRetrieve(CaseRetrieveReq req)
         {
@@ -47,7 +47,7 @@ namespace KYL_CMS.Controllers
             return json;
         }
 
-        [Authorize]
+        ////[Authorize]
         [AcceptVerbs("POST")]
         public string CaseQuery(CaseModifyReq req)
         {
@@ -72,7 +72,7 @@ namespace KYL_CMS.Controllers
             return json;
         }
 
-        [Authorize]
+        ////[Authorize]
         [AcceptVerbs("POST")]
         public string CaseCreate()
         {
@@ -115,7 +115,7 @@ namespace KYL_CMS.Controllers
             return json;
         }
 
-        [Authorize]
+        ////[Authorize]
         [AcceptVerbs("POST")]
         public string CaseUpdate()
         {
@@ -158,7 +158,7 @@ namespace KYL_CMS.Controllers
             return json;
         }
 
-        [Authorize]
+        ////[Authorize]
         [AcceptVerbs("POST")]
         public string CaseDelete()
         {

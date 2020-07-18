@@ -15,7 +15,7 @@ namespace KYL_CMS.Controllers
 {
     public class MainController : BaseController
     {
-        [Authorize]
+        ////[Authorize]
         [ChildActionOnly]
         public ActionResult Sidebar()
         {
@@ -34,13 +34,13 @@ namespace KYL_CMS.Controllers
             return View();
         }
 
-        [Authorize]
+        ////[Authorize]
         public ActionResult Dashboard()
         {
             return View();
         }
 
-        [Authorize]
+        ////[Authorize]
         public ActionResult ForceChange()
         {
             return View();
@@ -124,7 +124,7 @@ namespace KYL_CMS.Controllers
             return View(res);
         }
 
-        [Authorize]
+        ////[Authorize]
         [AcceptVerbs("POST")]
         public ActionResult ForceChange(FormCollection data)
         {
@@ -162,7 +162,7 @@ namespace KYL_CMS.Controllers
             return View(res);
         }
 
-        [Authorize]
+        ////[Authorize]
         public string ItemListRetrieve(ItemListRetrieveReq req)
         {
             ItemListRetrieveRes res = new ItemListRetrieveRes();

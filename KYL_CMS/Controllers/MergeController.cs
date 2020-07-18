@@ -15,13 +15,13 @@ namespace KYL_CMS.Controllers
     public class MergeController : BaseController
     {
         // GET: Merge
-        [Authorize]
+        ////[Authorize]
         public ActionResult MergeIndex()
         {
             return View();
         }
 
-        [Authorize]
+        ////[Authorize]
         [AcceptVerbs("POST")]
         public string CaseRetrieve(CaseRetrieveReq req)
         {
@@ -44,7 +44,7 @@ namespace KYL_CMS.Controllers
             return json;
         }
 
-        [Authorize]
+        ////[Authorize]
         [AcceptVerbs("POST")]
         public string CaseMerge()
         {

@@ -17,13 +17,13 @@ namespace KYL_CMS.Controllers
 {
     public class UsersController : BaseController
     {
-        [Authorize]
+        ////[Authorize]
         public ActionResult UsersIndex()
         {
             return View();
         }
 
-        [Authorize]
+        ////[Authorize]
         [AcceptVerbs("POST")]
         public string UsersRetrieve(UsersRetrieveReq req)
         {
@@ -45,7 +45,7 @@ namespace KYL_CMS.Controllers
             return json;
         }
 
-        [Authorize]
+        ////[Authorize]
         [AcceptVerbs("POST")]
         public string UsersQuery(UsersModifyReq req)
         {
@@ -70,7 +70,7 @@ namespace KYL_CMS.Controllers
             return json;
         }
 
-        [Authorize]
+        ////[Authorize]
         [AcceptVerbs("POST")]
         public string UsersUpdate(UsersModifyReq req)
         {
@@ -111,7 +111,7 @@ namespace KYL_CMS.Controllers
             return json;
         }
 
-        [Authorize]
+        ////[Authorize]
         [AcceptVerbs("POST")]
         public string UsersReset(UsersModifyReq req)
         {
@@ -143,7 +143,7 @@ namespace KYL_CMS.Controllers
             return json;
         }
 
-        [Authorize]
+        ////[Authorize]
         [AcceptVerbs("POST")]
         public string UsersDelete(UsersModifyReq req)
         {
@@ -181,7 +181,7 @@ namespace KYL_CMS.Controllers
             return json;
         }
 
-        [Authorize]
+        ////[Authorize]
         [AcceptVerbs("POST")]
         public string UsersCreate()
         {
@@ -220,7 +220,7 @@ namespace KYL_CMS.Controllers
             return json;
         }
 
-        [Authorize]
+        ////[Authorize]
         [AcceptVerbs("POST", "GET")]
         public ActionResult UsersExcel()
         {

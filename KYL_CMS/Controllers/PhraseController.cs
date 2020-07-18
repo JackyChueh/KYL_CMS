@@ -16,13 +16,13 @@ namespace KYL_CMS.Controllers
 {
     public class PhraseController : BaseController
     {
-        [Authorize]
+        ////[Authorize]
         public ActionResult PhraseIndex()
         {
             return View();
         }
 
-        [Authorize]
+        ////[Authorize]
         [AcceptVerbs("POST")]
         public string PhraseRetrieve(PhraseRetrieveReq req)
         {
@@ -44,7 +44,7 @@ namespace KYL_CMS.Controllers
             return json;
         }
 
-        [Authorize]
+        ////[Authorize]
         [AcceptVerbs("POST")]
         public string PhraseQuery(PhraseModifyReq req)
         {
@@ -69,7 +69,7 @@ namespace KYL_CMS.Controllers
             return json;
         }
 
-        [Authorize]
+        ////[Authorize]
         [AcceptVerbs("POST")]
         public string PhraseUpdate(PhraseModifyReq req)
         {
@@ -112,7 +112,7 @@ namespace KYL_CMS.Controllers
             return json;
         }
 
-        [Authorize]
+        ////[Authorize]
         [AcceptVerbs("POST")]
         public string PhraseDelete(PhraseModifyReq req)
         {
@@ -148,7 +148,7 @@ namespace KYL_CMS.Controllers
             return json;
         }
 
-        [Authorize]
+        ////[Authorize]
         [AcceptVerbs("POST")]
         public string PhraseCreate()
         {

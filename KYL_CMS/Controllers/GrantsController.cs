@@ -16,13 +16,13 @@ namespace KYL_CMS.Controllers
 {
     public class GrantsController : BaseController
     {
-        [Authorize]
+        ////[Authorize]
         public ActionResult GrantsIndex()
         {
             return View();
         }
 
-        [Authorize]
+        ////[Authorize]
         [AcceptVerbs("POST")]
         public string UsersGrantsQuery(GrantsRetrieveReq req)
         {
@@ -47,7 +47,7 @@ namespace KYL_CMS.Controllers
             return json;
         }
 
-        [Authorize]
+        ////[Authorize]
         [AcceptVerbs("POST")]
         public string RolesGrantsQuery(GrantsRetrieveReq req)
         {
@@ -72,7 +72,7 @@ namespace KYL_CMS.Controllers
             return json;
         }
 
-        [Authorize]
+        ////[Authorize]
         [AcceptVerbs("POST")]
         public string UsersGrantsUpdate(GrantsModifyReq req)
         {
@@ -97,7 +97,7 @@ namespace KYL_CMS.Controllers
             return json;
         }
 
-        [Authorize]
+        ////[Authorize]
         [AcceptVerbs("POST")]
         public string RolersGrantsUpdate(GrantsModifyReq req)
         {

@@ -18,13 +18,13 @@ namespace KYL_CMS.Controllers
     public class InterviewController : BaseController
     {
         // GET: Interview
-        [Authorize]
+        ////[Authorize]
         public ActionResult InterviewIndex()
         {
             return View();
         }
 
-        [Authorize]
+        ////[Authorize]
         [AcceptVerbs("POST")]
         public string InterviewRetrieve(CaseRetrieveReq req)
         {
@@ -47,7 +47,7 @@ namespace KYL_CMS.Controllers
             return json;
         }
 
-        [Authorize]
+        ////[Authorize]
         [AcceptVerbs("POST")]
         public string InterviewQuery(CaseModifyReq req)
         {
@@ -72,7 +72,7 @@ namespace KYL_CMS.Controllers
             return json;
         }
 
-        [Authorize]
+        ////[Authorize]
         [AcceptVerbs("POST")]
         public string InterviewUpdate()
         {

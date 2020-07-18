@@ -19,7 +19,7 @@ namespace KYL_CMS.Controllers
             return View();
         }
 
-        [Authorize]
+        ////[Authorize]
         [AcceptVerbs("POST")]
         public string HistoryRetrieve(HistoryRetrieveReq req)
         {
@@ -42,7 +42,7 @@ namespace KYL_CMS.Controllers
             return json;
         }
 
-        [Authorize]
+        ////[Authorize]
         [AcceptVerbs("POST")]
         public string HistoryQuery(CaseModifyReq req)
         {

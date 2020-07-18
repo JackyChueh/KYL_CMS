@@ -20,13 +20,13 @@ namespace KYL_CMS.Controllers
     public class InterviewReportController : BaseController
     {
         // GET: InterviewReport
-        [Authorize]
+        ////[Authorize]
         public ActionResult InterviewReportIndex()
         {
             return View();
         }
 
-        [Authorize]
+        ////[Authorize]
         [AcceptVerbs("POST", "GET")]
         public ActionResult InterviewReportExcel()
         {
