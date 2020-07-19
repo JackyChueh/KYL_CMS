@@ -15,7 +15,6 @@
             <button type="button" id="undo" class="btn btn-sm btn-outline-dark ml-1" style="display: none;"><i class="fa fa-undo fa-lg mr-1"></i>復原</button>
             <button type="button" id="delete" class="btn btn-sm btn-outline-dark ml-1" style="display: none;"><i class="fa fa-trash fa-lg mr-1"></i>刪除</button>
             <button type="button" id="return" class="btn btn-sm btn-outline-dark ml-1" style="display:none;"><i class="fa fa-arrow-left fa-lg mr-1"></i>返回</button>
-            @*<button type="button" id="return" class="btn btn-sm btn-outline-dark ml-1" style="display: none;"><i class="fa fa-users fa-lg mr-1"></i>搜尋案主</button>*@
         </div>
     </div>
     <div class="card-body">
@@ -644,7 +643,7 @@
     <script src="~/js/Case/case_index.js"></script>
     <script type="text/JavaScript">
         $(document).ready(function () {
-            CaseIndex.UserId = '@Session["ID"] == null ? "" : Session["ID"].ToString()';
+            CaseIndex.UserId = '@Session["ID"].ToString()';
             CaseIndex.Page_Init();
         });
     </script>

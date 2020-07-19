@@ -20,7 +20,14 @@ namespace KYL_CMS.Controllers
         ////[Authorize]
         public ActionResult UsersIndex()
         {
-            return View();
+            if (Session["ID"] == null)
+            {
+                return RedirectToAction("Login", "Main");
+            }
+            else
+            {
+                return View();
+            }
         }
 
         ////[Authorize]
@@ -28,17 +35,24 @@ namespace KYL_CMS.Controllers
         public string UsersRetrieve(UsersRetrieveReq req)
         {
             UsersRetrieveRes res = new UsersRetrieveRes();
-            try
+            if (Session["ID"] == null)
             {
-                Log("Req=" + JsonConvert.SerializeObject(req));
-                res = new KYL_CMS.Models.BusinessLogic.Users("SCC").PaginationRetrieve(req);
-                res.ReturnStatus = new ReturnStatus(ReturnCode.SUCCESS);
+                res.ReturnStatus = new ReturnStatus(ReturnCode.SESSION_TIMEOUT);
             }
-            catch (Exception ex)
+            else
             {
-                Log("Err=" + ex.Message);
-                Log(ex.StackTrace);
-                res.ReturnStatus = new ReturnStatus(ReturnCode.SERIOUS_ERROR);
+                try
+                {
+                    Log("Req=" + JsonConvert.SerializeObject(req));
+                    res = new KYL_CMS.Models.BusinessLogic.Users("SCC").PaginationRetrieve(req);
+                    res.ReturnStatus = new ReturnStatus(ReturnCode.SUCCESS);
+                }
+                catch (Exception ex)
+                {
+                    Log("Err=" + ex.Message);
+                    Log(ex.StackTrace);
+                    res.ReturnStatus = new ReturnStatus(ReturnCode.SERIOUS_ERROR);
+                }
             }
             var json = JsonConvert.SerializeObject(res);
             Log("Res=" + json);
@@ -50,20 +64,27 @@ namespace KYL_CMS.Controllers
         public string UsersQuery(UsersModifyReq req)
         {
             UsersModifyRes res = new UsersModifyRes();
-            try
+            if (Session["ID"] == null)
             {
-                Log("Req=" + JsonConvert.SerializeObject(req));
-                res = new UsersModifyRes
-                {
-                    USERS = new KYL_CMS.Models.BusinessLogic.Users("SCC").ModificationQuery(req.USERS.SN),
-                    ReturnStatus = new ReturnStatus(ReturnCode.SUCCESS)
-                };
+                res.ReturnStatus = new ReturnStatus(ReturnCode.SESSION_TIMEOUT);
             }
-            catch (Exception ex)
+            else
             {
-                Log("Err=" + ex.Message);
-                Log(ex.StackTrace);
-                res.ReturnStatus = new ReturnStatus(ReturnCode.SERIOUS_ERROR);
+                try
+                {
+                    Log("Req=" + JsonConvert.SerializeObject(req));
+                    res = new UsersModifyRes
+                    {
+                        USERS = new KYL_CMS.Models.BusinessLogic.Users("SCC").ModificationQuery(req.USERS.SN),
+                        ReturnStatus = new ReturnStatus(ReturnCode.SUCCESS)
+                    };
+                }
+                catch (Exception ex)
+                {
+                    Log("Err=" + ex.Message);
+                    Log(ex.StackTrace);
+                    res.ReturnStatus = new ReturnStatus(ReturnCode.SERIOUS_ERROR);
+                }
             }
             var json = JsonConvert.SerializeObject(res);
             Log("Res=" + json);
@@ -75,36 +96,43 @@ namespace KYL_CMS.Controllers
         public string UsersUpdate(UsersModifyReq req)
         {
             UsersModifyRes res = new UsersModifyRes();
-            try
+            if (Session["ID"] == null)
             {
-                Log("Req=" + JsonConvert.SerializeObject(req));
-                req.USERS.MUSER = Session["ID"].ToString();
-
-                UsersModifyReq oldData = new UsersModifyReq();
-                oldData.USERS = new KYL_CMS.Models.BusinessLogic.Users("SCC").ModificationQuery(req.USERS.SN);
-                if (oldData.USERS.ID != req.USERS.ID && new Interview("KYL").CheckUserIdUsed(req.USERS.ID))
-                {
-                    res = new UsersModifyRes
-                    {
-                        ReturnStatus = new ReturnStatus(ReturnCode.ITEM_USED)
-                    };
-                }
-                else
-                {
-                    int i = new KYL_CMS.Models.BusinessLogic.Users("SCC").DataUpdate(req);
-                    res = new UsersModifyRes
-                    {
-                        USERS = req.USERS,
-                        ReturnStatus = new ReturnStatus(ReturnCode.EDIT_SUCCESS)
-                    };
-                }
-
+                res.ReturnStatus = new ReturnStatus(ReturnCode.SESSION_TIMEOUT);
             }
-            catch (Exception ex)
+            else
             {
-                Log("Err=" + ex.Message);
-                Log(ex.StackTrace);
-                res.ReturnStatus = new ReturnStatus(ReturnCode.SERIOUS_ERROR);
+                try
+                {
+                    Log("Req=" + JsonConvert.SerializeObject(req));
+                    req.USERS.MUSER = Session["ID"].ToString();
+
+                    UsersModifyReq oldData = new UsersModifyReq();
+                    oldData.USERS = new KYL_CMS.Models.BusinessLogic.Users("SCC").ModificationQuery(req.USERS.SN);
+                    if (oldData.USERS.ID != req.USERS.ID && new Interview("KYL").CheckUserIdUsed(req.USERS.ID))
+                    {
+                        res = new UsersModifyRes
+                        {
+                            ReturnStatus = new ReturnStatus(ReturnCode.ITEM_USED)
+                        };
+                    }
+                    else
+                    {
+                        int i = new KYL_CMS.Models.BusinessLogic.Users("SCC").DataUpdate(req);
+                        res = new UsersModifyRes
+                        {
+                            USERS = req.USERS,
+                            ReturnStatus = new ReturnStatus(ReturnCode.EDIT_SUCCESS)
+                        };
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    Log("Err=" + ex.Message);
+                    Log(ex.StackTrace);
+                    res.ReturnStatus = new ReturnStatus(ReturnCode.SERIOUS_ERROR);
+                }
             }
             var json = JsonConvert.SerializeObject(res);
             Log("Res=" + json);
@@ -116,27 +144,34 @@ namespace KYL_CMS.Controllers
         public string UsersReset(UsersModifyReq req)
         {
             UsersModifyRes res = new UsersModifyRes();
-            try
+            if (Session["ID"] == null)
             {
-                Log("Req=" + JsonConvert.SerializeObject(req));
-                req.USERS.MUSER = Session["ID"].ToString();
-
-                UsersModifyReq oldData = new UsersModifyReq();
-                oldData.USERS = new KYL_CMS.Models.BusinessLogic.Users("SCC").ModificationQuery(req.USERS.SN);
-                req.USERS.PASSWORD = oldData.USERS.ID;
-                int i = new KYL_CMS.Models.BusinessLogic.Users("SCC").DataReset(req, 1);
-
-                res = new UsersModifyRes
-                {
-                    USERS = req.USERS,
-                    ReturnStatus = new ReturnStatus(ReturnCode.RESET_SUCCESS)
-                };
+                res.ReturnStatus = new ReturnStatus(ReturnCode.SESSION_TIMEOUT);
             }
-            catch (Exception ex)
+            else
             {
-                Log("Err=" + ex.Message);
-                Log(ex.StackTrace);
-                res.ReturnStatus = new ReturnStatus(ReturnCode.SERIOUS_ERROR);
+                try
+                {
+                    Log("Req=" + JsonConvert.SerializeObject(req));
+                    req.USERS.MUSER = Session["ID"].ToString();
+
+                    UsersModifyReq oldData = new UsersModifyReq();
+                    oldData.USERS = new KYL_CMS.Models.BusinessLogic.Users("SCC").ModificationQuery(req.USERS.SN);
+                    req.USERS.PASSWORD = oldData.USERS.ID;
+                    int i = new KYL_CMS.Models.BusinessLogic.Users("SCC").DataReset(req, 1);
+
+                    res = new UsersModifyRes
+                    {
+                        USERS = req.USERS,
+                        ReturnStatus = new ReturnStatus(ReturnCode.RESET_SUCCESS)
+                    };
+                }
+                catch (Exception ex)
+                {
+                    Log("Err=" + ex.Message);
+                    Log(ex.StackTrace);
+                    res.ReturnStatus = new ReturnStatus(ReturnCode.SERIOUS_ERROR);
+                }
             }
             var json = JsonConvert.SerializeObject(res);
             Log("Res=" + json);
@@ -148,33 +183,40 @@ namespace KYL_CMS.Controllers
         public string UsersDelete(UsersModifyReq req)
         {
             UsersModifyRes res = new UsersModifyRes();
-            try
+            if (Session["ID"] == null)
             {
-                Log("Req=" + JsonConvert.SerializeObject(req));
-                req.USERS.MUSER = Session["ID"].ToString();
-                if (new Interview("KYL").CheckUserIdUsed(req.USERS.ID))
-                {
-                    res = new UsersModifyRes
-                    {
-                        ReturnStatus = new ReturnStatus(ReturnCode.ITEM_USED)
-                    };
-                }
-                else
-                {
-                    int i = new KYL_CMS.Models.BusinessLogic.Users("SCC").DataDelete(req);
-                    res = new UsersModifyRes
-                    {
-                        ReturnStatus = new ReturnStatus(ReturnCode.DEL_SUCCESS)
-                    };
-                }
-
-
+                res.ReturnStatus = new ReturnStatus(ReturnCode.SESSION_TIMEOUT);
             }
-            catch (Exception ex)
+            else
             {
-                Log("Err=" + ex.Message);
-                Log(ex.StackTrace);
-                res.ReturnStatus = new ReturnStatus(ReturnCode.SERIOUS_ERROR);
+                try
+                {
+                    Log("Req=" + JsonConvert.SerializeObject(req));
+                    req.USERS.MUSER = Session["ID"].ToString();
+                    if (new Interview("KYL").CheckUserIdUsed(req.USERS.ID))
+                    {
+                        res = new UsersModifyRes
+                        {
+                            ReturnStatus = new ReturnStatus(ReturnCode.ITEM_USED)
+                        };
+                    }
+                    else
+                    {
+                        int i = new KYL_CMS.Models.BusinessLogic.Users("SCC").DataDelete(req);
+                        res = new UsersModifyRes
+                        {
+                            ReturnStatus = new ReturnStatus(ReturnCode.DEL_SUCCESS)
+                        };
+                    }
+
+
+                }
+                catch (Exception ex)
+                {
+                    Log("Err=" + ex.Message);
+                    Log(ex.StackTrace);
+                    res.ReturnStatus = new ReturnStatus(ReturnCode.SERIOUS_ERROR);
+                }
             }
             var json = JsonConvert.SerializeObject(res);
             Log("Res=" + json);
@@ -193,27 +235,34 @@ namespace KYL_CMS.Controllers
             JsonConvert.PopulateObject(input, req);
 
             UsersModifyRes res = new UsersModifyRes();
-            try
+            if (Session["ID"] == null)
             {
-                Log("Req=" + JsonConvert.SerializeObject(req));
-                req.USERS.CUSER = Session["ID"].ToString();
-                req.USERS.MUSER = Session["ID"].ToString();
-                if (req.USERS.PASSWORD.Length == 0)
-                {
-                    req.USERS.PASSWORD = req.USERS.ID;
-                }
-                int i = new KYL_CMS.Models.BusinessLogic.Users("SCC").DataCreate(req);
-                res = new UsersModifyRes
-                {
-                    USERS = req.USERS,
-                    ReturnStatus = new ReturnStatus(ReturnCode.ADD_SUCCESS)
-                };
+                res.ReturnStatus = new ReturnStatus(ReturnCode.SESSION_TIMEOUT);
             }
-            catch (Exception ex)
+            else
             {
-                Log("Err=" + ex.Message);
-                Log(ex.StackTrace);
-                res.ReturnStatus = new ReturnStatus(ReturnCode.SERIOUS_ERROR);
+                try
+                {
+                    Log("Req=" + JsonConvert.SerializeObject(req));
+                    req.USERS.CUSER = Session["ID"].ToString();
+                    req.USERS.MUSER = Session["ID"].ToString();
+                    if (req.USERS.PASSWORD.Length == 0)
+                    {
+                        req.USERS.PASSWORD = req.USERS.ID;
+                    }
+                    int i = new KYL_CMS.Models.BusinessLogic.Users("SCC").DataCreate(req);
+                    res = new UsersModifyRes
+                    {
+                        USERS = req.USERS,
+                        ReturnStatus = new ReturnStatus(ReturnCode.ADD_SUCCESS)
+                    };
+                }
+                catch (Exception ex)
+                {
+                    Log("Err=" + ex.Message);
+                    Log(ex.StackTrace);
+                    res.ReturnStatus = new ReturnStatus(ReturnCode.SERIOUS_ERROR);
+                }
             }
             var json = JsonConvert.SerializeObject(res);
             Log("Res=" + json);

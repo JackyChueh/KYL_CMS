@@ -403,7 +403,7 @@
 
     RowSelected: function (key) {
         PhraseIndex.PhraseQuery(key);
-        this.ActionSwitch('U');
+        //this.ActionSwitch('U');
     },
 
     DataValidate: function () {

@@ -17,5 +17,36 @@ namespace KYL_CMS
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
         }
+
+        protected void Session_Start()
+        {
+            try
+            {
+                if (Session["ID"] != null)
+                {
+                    KYL_CMS.Models.HelpLibrary.Log.Write("Global", "Session_Start SessionID:" + Session.SessionID);
+                    KYL_CMS.Models.HelpLibrary.Log.Write("Global", "Session_Start Session[ID]:" + Session["ID"].ToString());
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+       
+        }
+
+        protected void Session_End()
+        {
+            try
+            {
+                if (Session["ID"] != null)
+                {
+                    KYL_CMS.Models.HelpLibrary.Log.Write("Global", "Session_End SessionID:" + Session.SessionID);
+                    KYL_CMS.Models.HelpLibrary.Log.Write("Global", "Session_End Session[ID]:" + Session["ID"].ToString());
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+        }
     }
 }

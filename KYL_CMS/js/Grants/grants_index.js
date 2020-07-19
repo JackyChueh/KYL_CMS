@@ -101,7 +101,7 @@
             contentType: 'application/json',
             data: JSON.stringify(request),
             success: function (data) {
-                console.log(data);
+                //console.log(data);
                 var response = JSON.parse(data);
                 //console.log(response);
                 if (response.ReturnStatus.Code === 0) {
@@ -146,7 +146,7 @@
             contentType: 'application/json',
             data: JSON.stringify(request),
             success: function (data) {
-                console.log(data);
+                //console.log(data);
                 var response = JSON.parse(data);
                 //console.log(response);
                 if (response.ReturnStatus.Code === 0) {
@@ -306,19 +306,20 @@
             roles.push($(this).val());
         });
         request.ROLES_SN = roles;
-
         $.ajax({
             type: 'post',
             url: url,
             contentType: 'application/json',
             data: JSON.stringify(request),
             success: function (data) {
+                //console.log(data)
                 var response = JSON.parse(data);
                 if (response.ReturnStatus.Code === 4) {
-                    $('#modal .modal-title').text('交易訊息');
-                    $('#modal .modal-body').html('<p>交易說明:' + response.ReturnStatus.Message + '<br /> 交易代碼:' + response.ReturnStatus.Code + '</p>');
-                    $('#modal').modal('show');
+                    //
                 }
+                $('#modal .modal-title').text('交易訊息');
+                $('#modal .modal-body').html('<p>交易說明:' + response.ReturnStatus.Message + '<br /> 交易代碼:' + response.ReturnStatus.Code + '</p>');
+                $('#modal').modal('show');
             },
             error: function (xhr, ajaxOptions, thrownError) {
                 $('#modal .modal-title').text(ajaxOptions);
@@ -355,10 +356,11 @@
             success: function (data) {
                 var response = JSON.parse(data);
                 if (response.ReturnStatus.Code === 4) {
-                    $('#modal .modal-title').text('交易訊息');
-                    $('#modal .modal-body').html('<p>交易說明:' + response.ReturnStatus.Message + '<br /> 交易代碼:' + response.ReturnStatus.Code + '</p>');
-                    $('#modal').modal('show');
+                  //
                 }
+                $('#modal .modal-title').text('交易訊息');
+                $('#modal .modal-body').html('<p>交易說明:' + response.ReturnStatus.Message + '<br /> 交易代碼:' + response.ReturnStatus.Code + '</p>');
+                $('#modal').modal('show');
             },
             error: function (xhr, ajaxOptions, thrownError) {
                 $('#modal .modal-title').text(ajaxOptions);
@@ -424,7 +426,7 @@
             contentType: 'application/json',
             data: JSON.stringify(request),
             success: function (data) {
-                console.log(data)
+                //console.log(data)
                 var response = JSON.parse(data);
                 if (response.ReturnStatus.Code === 0) {
                     var joined = $('#joined');
@@ -476,7 +478,7 @@
             contentType: 'application/json',
             data: JSON.stringify(request),
             success: function (data) {
-                console.log(data)
+                //console.log(data)
                 var response = JSON.parse(data);
                 if (response.ReturnStatus.Code === 0) {
                     var joined = $('#joined');

@@ -265,7 +265,7 @@
                     //$('#section_modify #MUSER').val(response.USERS.MUSER);
                     UsersIndex.UsersQuery(response.USERS.SN);
                 }
-                UsersIndex.ActionSwitch('U');
+                
 
                 $('#modal .modal-title').text('交易訊息');
                 $('#modal .modal-body').html('<p>交易說明:' + response.ReturnStatus.Message + '<br /> 交易代碼:' + response.ReturnStatus.Code + '</p>');
@@ -453,7 +453,6 @@
 
     RowSelected: function (key) {
         UsersIndex.UsersQuery(key);
-        this.ActionSwitch('U');
     },
 
     DataValidate: function () {

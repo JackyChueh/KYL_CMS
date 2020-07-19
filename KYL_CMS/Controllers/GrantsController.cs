@@ -19,7 +19,14 @@ namespace KYL_CMS.Controllers
         ////[Authorize]
         public ActionResult GrantsIndex()
         {
-            return View();
+            if (Session["ID"] == null)
+            {
+                return RedirectToAction("Login", "Main");
+            }
+            else
+            {
+                return View();
+            }
         }
 
         ////[Authorize]
@@ -27,20 +34,27 @@ namespace KYL_CMS.Controllers
         public string UsersGrantsQuery(GrantsRetrieveReq req)
         {
             GrantsRetrieveRes res = new GrantsRetrieveRes();
-            try
+            if (Session["ID"] == null)
             {
-                Log("Req=" + JsonConvert.SerializeObject(req));
-                res = new GrantsRetrieveRes
-                {
-                    GRANTS = new Grants("SCC").ByUsersQuery(req.GRANTS.USERS_SN),
-                    ReturnStatus = new ReturnStatus(ReturnCode.SUCCESS)
-                };
+                res.ReturnStatus = new ReturnStatus(ReturnCode.SESSION_TIMEOUT);
             }
-            catch (Exception ex)
+            else
             {
-                Log("Err=" + ex.Message);
-                Log(ex.StackTrace);
-                res.ReturnStatus = new ReturnStatus(ReturnCode.SERIOUS_ERROR);
+                try
+                {
+                    Log("Req=" + JsonConvert.SerializeObject(req));
+                    res = new GrantsRetrieveRes
+                    {
+                        GRANTS = new Grants("SCC").ByUsersQuery(req.GRANTS.USERS_SN),
+                        ReturnStatus = new ReturnStatus(ReturnCode.SUCCESS)
+                    };
+                }
+                catch (Exception ex)
+                {
+                    Log("Err=" + ex.Message);
+                    Log(ex.StackTrace);
+                    res.ReturnStatus = new ReturnStatus(ReturnCode.SERIOUS_ERROR);
+                }
             }
             var json = JsonConvert.SerializeObject(res);
             Log("Res=" + json);
@@ -52,20 +66,27 @@ namespace KYL_CMS.Controllers
         public string RolesGrantsQuery(GrantsRetrieveReq req)
         {
             GrantsRetrieveRes res = new GrantsRetrieveRes();
-            try
+            if (Session["ID"] == null)
             {
-                Log("Req=" + JsonConvert.SerializeObject(req));
-                res = new GrantsRetrieveRes
-                {
-                    GRANTS = new Grants("SCC").ByRolesQuery(req.GRANTS.ROLES_SN),
-                    ReturnStatus = new ReturnStatus(ReturnCode.SUCCESS)
-                };
+                res.ReturnStatus = new ReturnStatus(ReturnCode.SESSION_TIMEOUT);
             }
-            catch (Exception ex)
+            else
             {
-                Log("Err=" + ex.Message);
-                Log(ex.StackTrace);
-                res.ReturnStatus = new ReturnStatus(ReturnCode.SERIOUS_ERROR);
+                try
+                {
+                    Log("Req=" + JsonConvert.SerializeObject(req));
+                    res = new GrantsRetrieveRes
+                    {
+                        GRANTS = new Grants("SCC").ByRolesQuery(req.GRANTS.ROLES_SN),
+                        ReturnStatus = new ReturnStatus(ReturnCode.SUCCESS)
+                    };
+                }
+                catch (Exception ex)
+                {
+                    Log("Err=" + ex.Message);
+                    Log(ex.StackTrace);
+                    res.ReturnStatus = new ReturnStatus(ReturnCode.SERIOUS_ERROR);
+                }
             }
             var json = JsonConvert.SerializeObject(res);
             Log("Res=" + json);
@@ -77,20 +98,27 @@ namespace KYL_CMS.Controllers
         public string UsersGrantsUpdate(GrantsModifyReq req)
         {
             GrantsModifyRes res = new GrantsModifyRes();
-            try
+            if (Session["ID"] == null)
             {
-                Log("Req=" + JsonConvert.SerializeObject(req));
-                req.CUSER = Session["ID"].ToString();
-                req.MUSER = Session["ID"].ToString();
-                int i = new Grants("SCC").ByUsersUpdate(req);
-
-                res.ReturnStatus = new ReturnStatus(ReturnCode.SET_SUCCESS);
+                res.ReturnStatus = new ReturnStatus(ReturnCode.SESSION_TIMEOUT);
             }
-            catch (Exception ex)
+            else
             {
-                Log("Err=" + ex.Message);
-                Log(ex.StackTrace);
-                res.ReturnStatus = new ReturnStatus(ReturnCode.SERIOUS_ERROR);
+                try
+                {
+                    Log("Req=" + JsonConvert.SerializeObject(req));
+                    req.CUSER = Session["ID"].ToString();
+                    req.MUSER = Session["ID"].ToString();
+                    int i = new Grants("SCC").ByUsersUpdate(req);
+
+                    res.ReturnStatus = new ReturnStatus(ReturnCode.SET_SUCCESS);
+                }
+                catch (Exception ex)
+                {
+                    Log("Err=" + ex.Message);
+                    Log(ex.StackTrace);
+                    res.ReturnStatus = new ReturnStatus(ReturnCode.SERIOUS_ERROR);
+                }
             }
             var json = JsonConvert.SerializeObject(res);
             Log("Res=" + json);
@@ -102,20 +130,27 @@ namespace KYL_CMS.Controllers
         public string RolersGrantsUpdate(GrantsModifyReq req)
         {
             GrantsModifyRes res = new GrantsModifyRes();
-            try
+            if (Session["ID"] == null)
             {
-                Log("Req=" + JsonConvert.SerializeObject(req));
-                req.CUSER = Session["ID"].ToString();
-                req.MUSER = Session["ID"].ToString();
-                int i = new Grants("SCC").ByRolesUpdate(req);
-
-                res.ReturnStatus = new ReturnStatus(ReturnCode.SET_SUCCESS);
+                res.ReturnStatus = new ReturnStatus(ReturnCode.SESSION_TIMEOUT);
             }
-            catch (Exception ex)
+            else
             {
-                Log("Err=" + ex.Message);
-                Log(ex.StackTrace);
-                res.ReturnStatus = new ReturnStatus(ReturnCode.SERIOUS_ERROR);
+                try
+                {
+                    Log("Req=" + JsonConvert.SerializeObject(req));
+                    req.CUSER = Session["ID"].ToString();
+                    req.MUSER = Session["ID"].ToString();
+                    int i = new Grants("SCC").ByRolesUpdate(req);
+
+                    res.ReturnStatus = new ReturnStatus(ReturnCode.SET_SUCCESS);
+                }
+                catch (Exception ex)
+                {
+                    Log("Err=" + ex.Message);
+                    Log(ex.StackTrace);
+                    res.ReturnStatus = new ReturnStatus(ReturnCode.SERIOUS_ERROR);
+                }
             }
             var json = JsonConvert.SerializeObject(res);
             Log("Res=" + json);

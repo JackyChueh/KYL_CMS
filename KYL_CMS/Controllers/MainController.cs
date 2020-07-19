@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Web;
-using System.Text;
-using System.Security.Cryptography;
+//using System.Web;
+//using System.Text;
+//using System.Security.Cryptography;
 using System.Web.Mvc;
-using System.Web.Security;
+//using System.Web.Security;
 using KYL_CMS.Models.EntityDefinition;
 using KYL_CMS.Models.BusinessLogic;
 using KYL_CMS.Models.DataClass;
@@ -127,6 +127,7 @@ namespace KYL_CMS.Controllers
                     }
                     else
                     {
+                        KYL_CMS.Models.HelpLibrary.Log.Write("Global", "Main/Login  SessionID:" + Session.SessionID);
                         return RedirectToAction("Dashboard", "Main");
                     }
                     

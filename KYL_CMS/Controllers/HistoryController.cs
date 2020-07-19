@@ -16,7 +16,14 @@ namespace KYL_CMS.Controllers
         // GET: History
         public ActionResult HistoryIndex()
         {
-            return View();
+            if (Session["ID"] == null)
+            {
+                return RedirectToAction("Login", "Main");
+            }
+            else
+            {
+                return View();
+            }
         }
 
         ////[Authorize]
@@ -24,18 +31,25 @@ namespace KYL_CMS.Controllers
         public string HistoryRetrieve(HistoryRetrieveReq req)
         {
             HistoryRetrieveRes res = new HistoryRetrieveRes();
-            try
+            if (Session["ID"] == null)
             {
-                Log("Req=" + JsonConvert.SerializeObject(req));
-
-                res = new History("KYL").PaginationRetrieve(req, Session["ID"].ToString());
-                res.ReturnStatus = new ReturnStatus(ReturnCode.SUCCESS);
+                res.ReturnStatus = new ReturnStatus(ReturnCode.SESSION_TIMEOUT);
             }
-            catch (Exception ex)
+            else
             {
-                Log("Err=" + ex.Message);
-                Log(ex.StackTrace);
-                res.ReturnStatus = new ReturnStatus(ReturnCode.SERIOUS_ERROR);
+                try
+                {
+                    Log("Req=" + JsonConvert.SerializeObject(req));
+
+                    res = new History("KYL").PaginationRetrieve(req, Session["ID"].ToString());
+                    res.ReturnStatus = new ReturnStatus(ReturnCode.SUCCESS);
+                }
+                catch (Exception ex)
+                {
+                    Log("Err=" + ex.Message);
+                    Log(ex.StackTrace);
+                    res.ReturnStatus = new ReturnStatus(ReturnCode.SERIOUS_ERROR);
+                }
             }
             var json = JsonConvert.SerializeObject(res);
             Log("Res=" + json);
@@ -47,20 +61,27 @@ namespace KYL_CMS.Controllers
         public string HistoryQuery(CaseModifyReq req)
         {
             CaseModifyRes res = new CaseModifyRes();
-            try
+            if (Session["ID"] == null)
             {
-                Log("Req=" + JsonConvert.SerializeObject(req));
-                res = new CaseModifyRes
-                {
-                    CASE = new History("KYL").ModificationQuery(req.CASE.SN, Session["ID"].ToString()),
-                    ReturnStatus = new ReturnStatus(ReturnCode.SUCCESS)
-                };
+                res.ReturnStatus = new ReturnStatus(ReturnCode.SESSION_TIMEOUT);
             }
-            catch (Exception ex)
+            else
             {
-                Log("Err=" + ex.Message);
-                Log(ex.StackTrace);
-                res.ReturnStatus = new ReturnStatus(ReturnCode.SERIOUS_ERROR);
+                try
+                {
+                    Log("Req=" + JsonConvert.SerializeObject(req));
+                    res = new CaseModifyRes
+                    {
+                        CASE = new History("KYL").ModificationQuery(req.CASE.SN, Session["ID"].ToString()),
+                        ReturnStatus = new ReturnStatus(ReturnCode.SUCCESS)
+                    };
+                }
+                catch (Exception ex)
+                {
+                    Log("Err=" + ex.Message);
+                    Log(ex.StackTrace);
+                    res.ReturnStatus = new ReturnStatus(ReturnCode.SERIOUS_ERROR);
+                }
             }
             var json = JsonConvert.SerializeObject(res);
             Log("Res=" + json);

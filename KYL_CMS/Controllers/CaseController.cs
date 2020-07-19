@@ -4,12 +4,12 @@ using KYL_CMS.Models.BusinessLogic;
 using KYL_CMS.Models.DataClass;
 using KYL_CMS.Models.DataClass.Case;
 using Newtonsoft.Json;
-using System.Linq;
-using System.IO;
-using DocumentFormat.OpenXml;
-using DocumentFormat.OpenXml.Packaging;
-using DocumentFormat.OpenXml.Spreadsheet;
-using KYL_CMS.Models.EntityDefinition;
+//using System.Linq;
+//using System.IO;
+//using DocumentFormat.OpenXml;
+//using DocumentFormat.OpenXml.Packaging;
+//using DocumentFormat.OpenXml.Spreadsheet;
+//using KYL_CMS.Models.EntityDefinition;
 using KYL_CMS.Models.HelpLibrary;
 
 namespace KYL_CMS.Controllers
@@ -20,7 +20,14 @@ namespace KYL_CMS.Controllers
         ////[Authorize]
         public ActionResult CaseIndex()
         {
-            return View();
+            if (Session["ID"] == null)
+            {
+                return RedirectToAction("Login", "Main");
+            }
+            else
+            {
+                return View();
+            }
         }
 
         ////[Authorize]
@@ -29,18 +36,25 @@ namespace KYL_CMS.Controllers
         {
 
             CaseRetrieveRes res = new CaseRetrieveRes();
-            try
+            if (Session["ID"] == null)
             {
-                Log("Req=" + JsonConvert.SerializeObject(req));
-
-                res = new Case("KYL").PaginationRetrieve(req);
-                res.ReturnStatus = new ReturnStatus(ReturnCode.SUCCESS);
+                res.ReturnStatus = new ReturnStatus(ReturnCode.SESSION_TIMEOUT);
             }
-            catch (Exception ex)
+            else
             {
-                Log("Err=" + ex.Message);
-                Log(ex.StackTrace);
-                res.ReturnStatus = new ReturnStatus(ReturnCode.SERIOUS_ERROR);
+                try
+                {
+                    Log("Req=" + JsonConvert.SerializeObject(req));
+
+                    res = new Case("KYL").PaginationRetrieve(req);
+                    res.ReturnStatus = new ReturnStatus(ReturnCode.SUCCESS);
+                }
+                catch (Exception ex)
+                {
+                    Log("Err=" + ex.Message);
+                    Log(ex.StackTrace);
+                    res.ReturnStatus = new ReturnStatus(ReturnCode.SERIOUS_ERROR);
+                }
             }
             var json = JsonConvert.SerializeObject(res);
             Log("Res=" + json);
@@ -52,20 +66,27 @@ namespace KYL_CMS.Controllers
         public string CaseQuery(CaseModifyReq req)
         {
             CaseModifyRes res = new CaseModifyRes();
-            try
+            if (Session["ID"] == null)
             {
-                Log("Req=" + JsonConvert.SerializeObject(req));
-                res = new CaseModifyRes
-                {
-                    CASE = new Case("KYL").ModificationQuery(req.CASE.SN),
-                    ReturnStatus = new ReturnStatus(ReturnCode.SUCCESS)
-                };
+                res.ReturnStatus = new ReturnStatus(ReturnCode.SESSION_TIMEOUT);
             }
-            catch (Exception ex)
+            else
             {
-                Log("Err=" + ex.Message);
-                Log(ex.StackTrace);
-                res.ReturnStatus = new ReturnStatus(ReturnCode.SERIOUS_ERROR);
+                try
+                {
+                    Log("Req=" + JsonConvert.SerializeObject(req));
+                    res = new CaseModifyRes
+                    {
+                        CASE = new Case("KYL").ModificationQuery(req.CASE.SN),
+                        ReturnStatus = new ReturnStatus(ReturnCode.SUCCESS)
+                    };
+                }
+                catch (Exception ex)
+                {
+                    Log("Err=" + ex.Message);
+                    Log(ex.StackTrace);
+                    res.ReturnStatus = new ReturnStatus(ReturnCode.SERIOUS_ERROR);
+                }
             }
             var json = JsonConvert.SerializeObject(res);
             Log("Res=" + json);
@@ -77,38 +98,45 @@ namespace KYL_CMS.Controllers
         public string CaseCreate()
         {
             CaseModifyRes res = new CaseModifyRes();
-            try
+            if (Session["ID"] == null)
             {
-                //上傳檔案
-                string fileName = new UploadFile().FamilyFileUpload(Request);
-                
+                res.ReturnStatus = new ReturnStatus(ReturnCode.SESSION_TIMEOUT);
+            }
+            else
+            {
                 try
                 {
-                    string data = Request["data"];
-                    Log("Res=" + data);
-                    CaseModifyReq req = new CaseModifyReq();
-                    JsonConvert.PopulateObject(data, req);
-                    req.CASE.CUSER = Session["ID"].ToString(); // User.Identity.Name;
-                    req.CASE.MUSER = Session["ID"].ToString();
-                    req.CASE.FAMILY_FILE = fileName;
-                    int i = new Case("KYL").DataCreate(req);
+                    //上傳檔案
+                    string fileName = new UploadFile().FamilyFileUpload(Request);
 
-                    //res.CASE = new Case("KYL").ModificationQuery(req.CASE.SN);
-                    res.CASE = req.CASE;
-                    res.ReturnStatus = new ReturnStatus(ReturnCode.ADD_SUCCESS);
+                    try
+                    {
+                        string data = Request["data"];
+                        Log("Res=" + data);
+                        CaseModifyReq req = new CaseModifyReq();
+                        JsonConvert.PopulateObject(data, req);
+                        req.CASE.CUSER = Session["ID"].ToString(); // User.Identity.Name;
+                        req.CASE.MUSER = Session["ID"].ToString();
+                        req.CASE.FAMILY_FILE = fileName;
+                        int i = new Case("KYL").DataCreate(req);
+
+                        //res.CASE = new Case("KYL").ModificationQuery(req.CASE.SN);
+                        res.CASE = req.CASE;
+                        res.ReturnStatus = new ReturnStatus(ReturnCode.ADD_SUCCESS);
+                    }
+                    catch (Exception ex)
+                    {
+                        Log("Err=" + ex.Message);
+                        Log(ex.StackTrace);
+                        res.ReturnStatus = new ReturnStatus(ReturnCode.SERIOUS_ERROR);
+                    }
                 }
                 catch (Exception ex)
                 {
                     Log("Err=" + ex.Message);
                     Log(ex.StackTrace);
-                    res.ReturnStatus = new ReturnStatus(ReturnCode.SERIOUS_ERROR);
+                    res.ReturnStatus = new ReturnStatus(ReturnCode.UPLOAD_FAIL, ex.Message);
                 }
-            }
-            catch (Exception ex)
-            {
-                Log("Err=" + ex.Message);
-                Log(ex.StackTrace);
-                res.ReturnStatus = new ReturnStatus(ReturnCode.UPLOAD_FAIL, ex.Message);
             }
             var json = JsonConvert.SerializeObject(res);
             Log("Res=" + json);
@@ -120,38 +148,45 @@ namespace KYL_CMS.Controllers
         public string CaseUpdate()
         {
             CaseModifyRes res = new CaseModifyRes();
-            try
+            if (Session["ID"] == null)
             {
-                //上傳檔案
-                string fileName = new UploadFile().FamilyFileUpload(Request);
-
+                res.ReturnStatus = new ReturnStatus(ReturnCode.SESSION_TIMEOUT);
+            }
+            else
+            {
                 try
                 {
-                    string data = Request["data"];
-                    Log("Res=" + data);
-                    CaseModifyReq req = new CaseModifyReq();
-                    JsonConvert.PopulateObject(data, req);
-                    req.CASE.CUSER = Session["ID"].ToString();
-                    req.CASE.MUSER = Session["ID"].ToString();
-                    req.CASE.FAMILY_FILE = fileName;
-                    int i = new Case("KYL").DataUpdate(req);
+                    //上傳檔案
+                    string fileName = new UploadFile().FamilyFileUpload(Request);
 
-                    //res.CASE = new Case("KYL").ModificationQuery(req.CASE.SN);
-                    res.CASE = req.CASE;
-                    res.ReturnStatus = new ReturnStatus(ReturnCode.EDIT_SUCCESS);
+                    try
+                    {
+                        string data = Request["data"];
+                        Log("Res=" + data);
+                        CaseModifyReq req = new CaseModifyReq();
+                        JsonConvert.PopulateObject(data, req);
+                        req.CASE.CUSER = Session["ID"].ToString();
+                        req.CASE.MUSER = Session["ID"].ToString();
+                        req.CASE.FAMILY_FILE = fileName;
+                        int i = new Case("KYL").DataUpdate(req);
+
+                        //res.CASE = new Case("KYL").ModificationQuery(req.CASE.SN);
+                        res.CASE = req.CASE;
+                        res.ReturnStatus = new ReturnStatus(ReturnCode.EDIT_SUCCESS);
+                    }
+                    catch (Exception ex)
+                    {
+                        Log("Err=" + ex.Message);
+                        Log(ex.StackTrace);
+                        res.ReturnStatus = new ReturnStatus(ReturnCode.SERIOUS_ERROR);
+                    }
                 }
                 catch (Exception ex)
                 {
                     Log("Err=" + ex.Message);
                     Log(ex.StackTrace);
-                    res.ReturnStatus = new ReturnStatus(ReturnCode.SERIOUS_ERROR);
+                    res.ReturnStatus = new ReturnStatus(ReturnCode.UPLOAD_FAIL, ex.Message);
                 }
-            }
-            catch (Exception ex)
-            {
-                Log("Err=" + ex.Message);
-                Log(ex.StackTrace);
-                res.ReturnStatus = new ReturnStatus(ReturnCode.UPLOAD_FAIL, ex.Message);
             }
             var json = JsonConvert.SerializeObject(res);
             Log("Res=" + json);
@@ -163,22 +198,29 @@ namespace KYL_CMS.Controllers
         public string CaseDelete()
         {
             CaseModifyRes res = new CaseModifyRes();
-            try
+            if (Session["ID"] == null)
             {
-                string data = Request["data"];
-                Log("Res=" + data);
-                CaseModifyReq req = new CaseModifyReq();
-                JsonConvert.PopulateObject(data, req);
-                req.CASE.CUSER = Session["ID"].ToString();
-                req.CASE.MUSER = Session["ID"].ToString();
-                int i = new Case("KYL").DataDelete(req);
-                res.ReturnStatus = new ReturnStatus(ReturnCode.DEL_SUCCESS);
+                res.ReturnStatus = new ReturnStatus(ReturnCode.SESSION_TIMEOUT);
             }
-            catch (Exception ex)
+            else
             {
-                Log("Err=" + ex.Message);
-                Log(ex.StackTrace);
-                res.ReturnStatus = new ReturnStatus(ReturnCode.SERIOUS_ERROR);
+                try
+                {
+                    string data = Request["data"];
+                    Log("Res=" + data);
+                    CaseModifyReq req = new CaseModifyReq();
+                    JsonConvert.PopulateObject(data, req);
+                    req.CASE.CUSER = Session["ID"].ToString();
+                    req.CASE.MUSER = Session["ID"].ToString();
+                    int i = new Case("KYL").DataDelete(req);
+                    res.ReturnStatus = new ReturnStatus(ReturnCode.DEL_SUCCESS);
+                }
+                catch (Exception ex)
+                {
+                    Log("Err=" + ex.Message);
+                    Log(ex.StackTrace);
+                    res.ReturnStatus = new ReturnStatus(ReturnCode.SERIOUS_ERROR);
+                }
             }
             var json = JsonConvert.SerializeObject(res);
             Log("Res=" + json);

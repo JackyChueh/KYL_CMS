@@ -6,6 +6,8 @@
     //Option: null,
     QueryStartDate: null,
     QueryEndDate: null,
+    TimeOut: false,
+    TimeOutIndex:null,
 
     Page_Init: function () {
         InterviewIndex.EventBinding();
@@ -214,6 +216,7 @@
                 var response = JSON.parse(data);
                 //console.log(response);
                 if (response.ReturnStatus.Code === 0) {
+                    InterviewIndex.TimeOut = false;
 
                     //$('#page_size').append('<option value=""></option>');
                     $.each(response.ItemList.page_size, function (idx, row) {
@@ -446,6 +449,8 @@
             success: function (data) {
                 var response = JSON.parse(data);
                 if (response.ReturnStatus.Code === 0) {
+                    InterviewIndex.TimeOut = false;
+
                     $('#gridview >  tbody').html('');
                     $('#rows_count').text(response.Pagination.RowCount);
                     $('#interval').text(response.Pagination.MinNumber + '-' + response.Pagination.MaxNumber);
@@ -530,7 +535,7 @@
         });
     },
 
-    CaseUpdate: function () {
+    CaseUpdate: function (idx) {
         var url = 'InterviewUpdate';
 
         var master_sectoin = $('#master_sectoin');
@@ -558,7 +563,17 @@
                 console.log(data);
                 var response = JSON.parse(data);
                 if (response.ReturnStatus.Code === 2) {
+
                     InterviewIndex.CaseQuery(response.CASE.SN);
+                    InterviewIndex.TimeOut = false;
+
+                }
+                else if (response.ReturnStatus.Code === -5) {
+                    //var $detail_template = $('#detail_template');
+                    //obj = $detail_template.find('[name=case_status]').find('input');
+                    //$(obj[0]).prop('checked', true);
+                    InterviewIndex.TimeOut = true;
+                    InterviewIndex.TimeOutIndex = idx;
                 }
                 $('#modal .modal-title').text('交易訊息');
                 $('#modal .modal-body').html('<p>交易說明:' + response.ReturnStatus.Message + '<br /> 交易代碼:' + response.ReturnStatus.Code + '</p>');
@@ -592,6 +607,8 @@
                 //console.log(data);
                 var response = JSON.parse(data);
                 if (response.ReturnStatus.Code === 0) {
+                    InterviewIndex.TimeOut = false;
+
                     if (response.CASE) {
                         var master_sectoin = $('#master_sectoin');
                         master_sectoin.find('[name=SN]').val(response.CASE.SN);
@@ -868,12 +885,22 @@
         $('#detail_modal .modal-body').html('');
         $('#detail_modal .modal-body').append(template);
 
-        if (InterviewIndex.UserId === value.VOLUNTEER_SN && value.CASE_STATUS !== '02' && value.CASE_STATUS !== '04') {
+        //console.log('InterviewIndex.UserId' + InterviewIndex.UserId);
+        //console.log('value.VOLUNTEER_SN' + value.VOLUNTEER_SN);
+        //console.log('value.CASE_STATUS' + value.CASE_STATUS);
+
+        if (InterviewIndex.TimeOut && InterviewIndex.TimeOutIndex === idx) {
             $('#detail_save').show();
             template.find('[name=CASE_STATUS][value="04"]').attr('disabled', true);
         }
         else {
-            $('#detail_save').hide();
+            if (InterviewIndex.UserId === value.VOLUNTEER_SN && value.CASE_STATUS !== '02' && value.CASE_STATUS !== '04') {
+                $('#detail_save').show();
+                template.find('[name=CASE_STATUS][value="04"]').attr('disabled', true);
+            }
+            else {
+                $('#detail_save').hide();
+            }
         }
         $('#detail_modal').modal('show');
 
@@ -893,7 +920,7 @@
             }
             
             var bool = /^\d+$/.test(template.find('input[name=DURING]').val());
-            console.log(bool);
+            //console.log(bool);
             if (!bool) {
                 ErrMsg += '談話時間輸入錯誤<br/>';
             }
@@ -1120,7 +1147,7 @@
 
             $('#detail_modal').modal('hide');
 
-            InterviewIndex.CaseUpdate();
+            InterviewIndex.CaseUpdate(detail_section.data('index'));
             //InterviewIndex.DetailRefresh();
         }
     },

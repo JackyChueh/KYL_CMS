@@ -1096,7 +1096,7 @@
                 ErrMsg += '此次接線時間不可空白<br/>';
             }
             var bool = /^\d+$/.test(template.find('input[name=DURING]').val());
-            console.log(bool);
+            //console.log(bool);
             if (!bool) {
                 ErrMsg += '談話時間輸入錯誤<br/>';
             }

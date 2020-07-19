@@ -19,7 +19,14 @@ namespace KYL_CMS.Controllers
         ////[Authorize]
         public ActionResult PhraseIndex()
         {
-            return View();
+            if (Session["ID"] == null)
+            {
+                return RedirectToAction("Login", "Main");
+            }
+            else
+            {
+                return View();
+            }
         }
 
         ////[Authorize]
@@ -27,17 +34,24 @@ namespace KYL_CMS.Controllers
         public string PhraseRetrieve(PhraseRetrieveReq req)
         {
             PhraseRetrieveRes res = new PhraseRetrieveRes();
-            try
+            if (Session["ID"] == null)
             {
-                Log("Req=" + JsonConvert.SerializeObject(req));
-                res = new KYL_CMS.Models.BusinessLogic.Phrase("SCC").PaginationRetrieve(req);
-                res.ReturnStatus = new ReturnStatus(ReturnCode.SUCCESS);
+                res.ReturnStatus = new ReturnStatus(ReturnCode.SESSION_TIMEOUT);
             }
-            catch (Exception ex)
+            else
             {
-                Log("Err=" + ex.Message);
-                Log(ex.StackTrace);
-                res.ReturnStatus = new ReturnStatus(ReturnCode.SERIOUS_ERROR);
+                try
+                {
+                    Log("Req=" + JsonConvert.SerializeObject(req));
+                    res = new KYL_CMS.Models.BusinessLogic.Phrase("SCC").PaginationRetrieve(req);
+                    res.ReturnStatus = new ReturnStatus(ReturnCode.SUCCESS);
+                }
+                catch (Exception ex)
+                {
+                    Log("Err=" + ex.Message);
+                    Log(ex.StackTrace);
+                    res.ReturnStatus = new ReturnStatus(ReturnCode.SERIOUS_ERROR);
+                }
             }
             var json = JsonConvert.SerializeObject(res);
             Log("Res=" + json);
@@ -49,20 +63,27 @@ namespace KYL_CMS.Controllers
         public string PhraseQuery(PhraseModifyReq req)
         {
             PhraseModifyRes res = new PhraseModifyRes();
-            try
+            if (Session["ID"] == null)
             {
-                Log("Req=" + JsonConvert.SerializeObject(req));
-                res = new PhraseModifyRes
-                {
-                    PHRASE = new KYL_CMS.Models.BusinessLogic.Phrase("SCC").ModificationQuery(req.PHRASE.SN),
-                    ReturnStatus = new ReturnStatus(ReturnCode.SUCCESS)
-                };
+                res.ReturnStatus = new ReturnStatus(ReturnCode.SESSION_TIMEOUT);
             }
-            catch (Exception ex)
+            else
             {
-                Log("Err=" + ex.Message);
-                Log(ex.StackTrace);
-                res.ReturnStatus = new ReturnStatus(ReturnCode.SERIOUS_ERROR);
+                try
+                {
+                    Log("Req=" + JsonConvert.SerializeObject(req));
+                    res = new PhraseModifyRes
+                    {
+                        PHRASE = new KYL_CMS.Models.BusinessLogic.Phrase("SCC").ModificationQuery(req.PHRASE.SN),
+                        ReturnStatus = new ReturnStatus(ReturnCode.SUCCESS)
+                    };
+                }
+                catch (Exception ex)
+                {
+                    Log("Err=" + ex.Message);
+                    Log(ex.StackTrace);
+                    res.ReturnStatus = new ReturnStatus(ReturnCode.SERIOUS_ERROR);
+                }
             }
             var json = JsonConvert.SerializeObject(res);
             Log("Res=" + json);
@@ -74,38 +95,45 @@ namespace KYL_CMS.Controllers
         public string PhraseUpdate(PhraseModifyReq req)
         {
             PhraseModifyRes res = new PhraseModifyRes();
-            try
+            if (Session["ID"] == null)
             {
-                Log("Req=" + JsonConvert.SerializeObject(req));
-                req.PHRASE.MUSER = Session["ID"].ToString();
-
-
-                PhraseModifyReq oldData = new PhraseModifyReq();
-                oldData.PHRASE = new Phrase("SCC").ModificationQuery(req.PHRASE.SN);
-                if (oldData.PHRASE.PHRASE_KEY!=req.PHRASE.PHRASE_KEY &&  new Interview("KYL").CheckPharseUsed(oldData))
-                {
-                    res = new PhraseModifyRes
-                    {
-                        ReturnStatus = new ReturnStatus(ReturnCode.ITEM_USED)
-                    };
-                }
-                else
-                {
-                    int i = new Phrase("SCC").DataUpdate(req);
-                    res = new PhraseModifyRes
-                    {
-                        PHRASE = req.PHRASE,
-                        ReturnStatus = new ReturnStatus(ReturnCode.EDIT_SUCCESS)
-                    };
-                }
-
-            
+                res.ReturnStatus = new ReturnStatus(ReturnCode.SESSION_TIMEOUT);
             }
-            catch (Exception ex)
+            else
             {
-                Log("Err=" + ex.Message);
-                Log(ex.StackTrace);
-                res.ReturnStatus = new ReturnStatus(ReturnCode.SERIOUS_ERROR);
+                try
+                {
+                    Log("Req=" + JsonConvert.SerializeObject(req));
+                    req.PHRASE.MUSER = Session["ID"].ToString();
+
+
+                    PhraseModifyReq oldData = new PhraseModifyReq();
+                    oldData.PHRASE = new Phrase("SCC").ModificationQuery(req.PHRASE.SN);
+                    if (oldData.PHRASE.PHRASE_KEY != req.PHRASE.PHRASE_KEY && new Interview("KYL").CheckPharseUsed(oldData))
+                    {
+                        res = new PhraseModifyRes
+                        {
+                            ReturnStatus = new ReturnStatus(ReturnCode.ITEM_USED)
+                        };
+                    }
+                    else
+                    {
+                        int i = new Phrase("SCC").DataUpdate(req);
+                        res = new PhraseModifyRes
+                        {
+                            PHRASE = req.PHRASE,
+                            ReturnStatus = new ReturnStatus(ReturnCode.EDIT_SUCCESS)
+                        };
+                    }
+
+
+                }
+                catch (Exception ex)
+                {
+                    Log("Err=" + ex.Message);
+                    Log(ex.StackTrace);
+                    res.ReturnStatus = new ReturnStatus(ReturnCode.SERIOUS_ERROR);
+                }
             }
             var json = JsonConvert.SerializeObject(res);
             Log("Res=" + json);
@@ -117,31 +145,38 @@ namespace KYL_CMS.Controllers
         public string PhraseDelete(PhraseModifyReq req)
         {
             PhraseModifyRes res = new PhraseModifyRes();
-            try
+            if (Session["ID"] == null)
             {
-                Log("Req=" + JsonConvert.SerializeObject(req));
-                req.PHRASE.MUSER = Session["ID"].ToString();
-                if (new Interview("KYL").CheckPharseUsed(req))
-                {
-                    res = new PhraseModifyRes
-                    {
-                        ReturnStatus = new ReturnStatus(ReturnCode.ITEM_USED)
-                    };
-                }
-                else
-                {
-                    int i = new Phrase("SCC").DataDelete(req);
-                    res = new PhraseModifyRes
-                    {
-                        ReturnStatus = new ReturnStatus(ReturnCode.DEL_SUCCESS)
-                    };
-                }
+                res.ReturnStatus = new ReturnStatus(ReturnCode.SESSION_TIMEOUT);
             }
-            catch (Exception ex)
+            else
             {
-                Log("Err=" + ex.Message);
-                Log(ex.StackTrace);
-                res.ReturnStatus = new ReturnStatus(ReturnCode.SERIOUS_ERROR);
+                try
+                {
+                    Log("Req=" + JsonConvert.SerializeObject(req));
+                    req.PHRASE.MUSER = Session["ID"].ToString();
+                    if (new Interview("KYL").CheckPharseUsed(req))
+                    {
+                        res = new PhraseModifyRes
+                        {
+                            ReturnStatus = new ReturnStatus(ReturnCode.ITEM_USED)
+                        };
+                    }
+                    else
+                    {
+                        int i = new Phrase("SCC").DataDelete(req);
+                        res = new PhraseModifyRes
+                        {
+                            ReturnStatus = new ReturnStatus(ReturnCode.DEL_SUCCESS)
+                        };
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Log("Err=" + ex.Message);
+                    Log(ex.StackTrace);
+                    res.ReturnStatus = new ReturnStatus(ReturnCode.SERIOUS_ERROR);
+                }
             }
             var json = JsonConvert.SerializeObject(res);
             Log("Res=" + json);
@@ -160,24 +195,31 @@ namespace KYL_CMS.Controllers
             JsonConvert.PopulateObject(input, req);
 
             PhraseModifyRes res = new PhraseModifyRes();
-            try
+            if (Session["ID"] == null)
             {
-                Log("Req=" + JsonConvert.SerializeObject(req));
-                req.PHRASE.CUSER = Session["ID"].ToString();
-                req.PHRASE.MUSER = Session["ID"].ToString();
-
-                int i = new KYL_CMS.Models.BusinessLogic.Phrase("SCC").DataCreate(req);
-                res = new PhraseModifyRes
-                {
-                    PHRASE = req.PHRASE,
-                    ReturnStatus = new ReturnStatus(ReturnCode.ADD_SUCCESS)
-                };
+                res.ReturnStatus = new ReturnStatus(ReturnCode.SESSION_TIMEOUT);
             }
-            catch (Exception ex)
+            else
             {
-                Log("Err=" + ex.Message);
-                Log(ex.StackTrace);
-                res.ReturnStatus = new ReturnStatus(ReturnCode.SERIOUS_ERROR);
+                try
+                {
+                    Log("Req=" + JsonConvert.SerializeObject(req));
+                    req.PHRASE.CUSER = Session["ID"].ToString();
+                    req.PHRASE.MUSER = Session["ID"].ToString();
+
+                    int i = new KYL_CMS.Models.BusinessLogic.Phrase("SCC").DataCreate(req);
+                    res = new PhraseModifyRes
+                    {
+                        PHRASE = req.PHRASE,
+                        ReturnStatus = new ReturnStatus(ReturnCode.ADD_SUCCESS)
+                    };
+                }
+                catch (Exception ex)
+                {
+                    Log("Err=" + ex.Message);
+                    Log(ex.StackTrace);
+                    res.ReturnStatus = new ReturnStatus(ReturnCode.SERIOUS_ERROR);
+                }
             }
             var json = JsonConvert.SerializeObject(res);
             Log("Res=" + json);

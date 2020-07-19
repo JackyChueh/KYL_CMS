@@ -19,7 +19,14 @@ namespace KYL_CMS.Controllers
         ////[Authorize]
         public ActionResult RolesIndex()
         {
-            return View();
+            if (Session["ID"] == null)
+            {
+                return RedirectToAction("Login", "Main");
+            }
+            else
+            {
+                return View();
+            }
         }
 
         ////[Authorize]
@@ -27,17 +34,24 @@ namespace KYL_CMS.Controllers
         public string RolesRetrieve(RolesRetrieveReq req)
         {
             RolesRetrieveRes res = new RolesRetrieveRes();
-            try
+            if (Session["ID"] == null)
             {
-                Log("Req=" + JsonConvert.SerializeObject(req));
-                res = new Roles("SCC").PaginationRetrieve(req);
-                res.ReturnStatus = new ReturnStatus(ReturnCode.SUCCESS);
+                res.ReturnStatus = new ReturnStatus(ReturnCode.SESSION_TIMEOUT);
             }
-            catch (Exception ex)
+            else
             {
-                Log("Err=" + ex.Message);
-                Log(ex.StackTrace);
-                res.ReturnStatus = new ReturnStatus(ReturnCode.SERIOUS_ERROR);
+                try
+                {
+                    Log("Req=" + JsonConvert.SerializeObject(req));
+                    res = new Roles("SCC").PaginationRetrieve(req);
+                    res.ReturnStatus = new ReturnStatus(ReturnCode.SUCCESS);
+                }
+                catch (Exception ex)
+                {
+                    Log("Err=" + ex.Message);
+                    Log(ex.StackTrace);
+                    res.ReturnStatus = new ReturnStatus(ReturnCode.SERIOUS_ERROR);
+                }
             }
             var json = JsonConvert.SerializeObject(res);
             Log("Res=" + json);
@@ -49,20 +63,27 @@ namespace KYL_CMS.Controllers
         public string RolesQuery(RolesModifyReq req)
         {
             RolesModifyRes res = new RolesModifyRes();
-            try
+            if (Session["ID"] == null)
             {
-                Log("Req=" + JsonConvert.SerializeObject(req));
-                res = new RolesModifyRes
-                {
-                    ROLES = new Roles("SCC").ModificationQuery(req.ROLES.SN),
-                    ReturnStatus = new ReturnStatus(ReturnCode.SUCCESS)
-                };
+                res.ReturnStatus = new ReturnStatus(ReturnCode.SESSION_TIMEOUT);
             }
-            catch (Exception ex)
+            else
             {
-                Log("Err=" + ex.Message);
-                Log(ex.StackTrace);
-                res.ReturnStatus = new ReturnStatus(ReturnCode.SERIOUS_ERROR);
+                try
+                {
+                    Log("Req=" + JsonConvert.SerializeObject(req));
+                    res = new RolesModifyRes
+                    {
+                        ROLES = new Roles("SCC").ModificationQuery(req.ROLES.SN),
+                        ReturnStatus = new ReturnStatus(ReturnCode.SUCCESS)
+                    };
+                }
+                catch (Exception ex)
+                {
+                    Log("Err=" + ex.Message);
+                    Log(ex.StackTrace);
+                    res.ReturnStatus = new ReturnStatus(ReturnCode.SERIOUS_ERROR);
+                }
             }
             var json = JsonConvert.SerializeObject(res);
             Log("Res=" + json);
@@ -74,23 +95,30 @@ namespace KYL_CMS.Controllers
         public string RolesUpdate(RolesModifyReq req)
         {
             RolesModifyRes res = new RolesModifyRes();
-            try
+            if (Session["ID"] == null)
             {
-                Log("Req=" + JsonConvert.SerializeObject(req));
-                req.ROLES.MUSER = Session["ID"].ToString();
-                int i = new Roles("SCC").DataUpdate(req);
-
-                res = new RolesModifyRes
-                {
-                    ROLES = new Roles("SCC").ModificationQuery(req.ROLES.SN),
-                    ReturnStatus = new ReturnStatus(ReturnCode.EDIT_SUCCESS)
-                };
+                res.ReturnStatus = new ReturnStatus(ReturnCode.SESSION_TIMEOUT);
             }
-            catch (Exception ex)
+            else
             {
-                Log("Err="+ex.Message);
-                Log(ex.StackTrace);
-                res.ReturnStatus = new ReturnStatus(ReturnCode.SERIOUS_ERROR);
+                try
+                {
+                    Log("Req=" + JsonConvert.SerializeObject(req));
+                    req.ROLES.MUSER = Session["ID"].ToString();
+                    int i = new Roles("SCC").DataUpdate(req);
+
+                    res = new RolesModifyRes
+                    {
+                        ROLES = new Roles("SCC").ModificationQuery(req.ROLES.SN),
+                        ReturnStatus = new ReturnStatus(ReturnCode.EDIT_SUCCESS)
+                    };
+                }
+                catch (Exception ex)
+                {
+                    Log("Err=" + ex.Message);
+                    Log(ex.StackTrace);
+                    res.ReturnStatus = new ReturnStatus(ReturnCode.SERIOUS_ERROR);
+                }
             }
             var json = JsonConvert.SerializeObject(res);
             Log("Res=" + json);
@@ -102,22 +130,29 @@ namespace KYL_CMS.Controllers
         public string RolesDelete(RolesModifyReq req)
         {
             RolesModifyRes res = new RolesModifyRes();
-            try
+            if (Session["ID"] == null)
             {
-                Log("Req=" + JsonConvert.SerializeObject(req));
-                req.ROLES.MUSER = Session["ID"].ToString();
-                int i = new Roles("SCC").DataDelete(req);
-
-                res = new RolesModifyRes
-                {
-                    ReturnStatus = new ReturnStatus(ReturnCode.DEL_SUCCESS)
-                };
+                res.ReturnStatus = new ReturnStatus(ReturnCode.SESSION_TIMEOUT);
             }
-            catch (Exception ex)
+            else
             {
-                Log("Err=" + ex.Message);
-                Log(ex.StackTrace);
-                res.ReturnStatus = new ReturnStatus(ReturnCode.SERIOUS_ERROR);
+                try
+                {
+                    Log("Req=" + JsonConvert.SerializeObject(req));
+                    req.ROLES.MUSER = Session["ID"].ToString();
+                    int i = new Roles("SCC").DataDelete(req);
+
+                    res = new RolesModifyRes
+                    {
+                        ReturnStatus = new ReturnStatus(ReturnCode.DEL_SUCCESS)
+                    };
+                }
+                catch (Exception ex)
+                {
+                    Log("Err=" + ex.Message);
+                    Log(ex.StackTrace);
+                    res.ReturnStatus = new ReturnStatus(ReturnCode.SERIOUS_ERROR);
+                }
             }
             var json = JsonConvert.SerializeObject(res);
             Log("Res=" + json);
@@ -136,24 +171,31 @@ namespace KYL_CMS.Controllers
             JsonConvert.PopulateObject(input, req);
 
             RolesModifyRes res = new RolesModifyRes();
-            try
+            if (Session["ID"] == null)
             {
-                Log("Req=" + JsonConvert.SerializeObject(req));
-                req.ROLES.CUSER = Session["ID"].ToString();
-                req.ROLES.MUSER = Session["ID"].ToString();
-
-                int i = new Roles("SCC").DataCreate(req);
-                res = new RolesModifyRes
-                {
-                    ROLES = new Roles("SCC").ModificationQuery(req.ROLES.SN),
-                    ReturnStatus = new ReturnStatus(ReturnCode.ADD_SUCCESS)
-                };
+                res.ReturnStatus = new ReturnStatus(ReturnCode.SESSION_TIMEOUT);
             }
-            catch (Exception ex)
+            else
             {
-                Log("Err=" + ex.Message);
-                Log(ex.StackTrace);
-                res.ReturnStatus = new ReturnStatus(ReturnCode.SERIOUS_ERROR);
+                try
+                {
+                    Log("Req=" + JsonConvert.SerializeObject(req));
+                    req.ROLES.CUSER = Session["ID"].ToString();
+                    req.ROLES.MUSER = Session["ID"].ToString();
+
+                    int i = new Roles("SCC").DataCreate(req);
+                    res = new RolesModifyRes
+                    {
+                        ROLES = new Roles("SCC").ModificationQuery(req.ROLES.SN),
+                        ReturnStatus = new ReturnStatus(ReturnCode.ADD_SUCCESS)
+                    };
+                }
+                catch (Exception ex)
+                {
+                    Log("Err=" + ex.Message);
+                    Log(ex.StackTrace);
+                    res.ReturnStatus = new ReturnStatus(ReturnCode.SERIOUS_ERROR);
+                }
             }
             var json = JsonConvert.SerializeObject(res);
             Log("Res=" + json);

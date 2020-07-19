@@ -23,7 +23,14 @@ namespace KYL_CMS.Controllers
         ////[Authorize]
         public ActionResult InterviewReportIndex()
         {
-            return View();
+            if (Session["ID"] == null)
+            {
+                return RedirectToAction("Login", "Main");
+            }
+            else
+            {
+                return View();
+            }
         }
 
         ////[Authorize]
@@ -330,7 +337,16 @@ namespace KYL_CMS.Controllers
 
                     #region data
 
-                    InterviewReportRetrieveRes res = new InterviewReport("KYL").ReportData(req);
+
+                    InterviewReportRetrieveRes res = new InterviewReportRetrieveRes() {
+                        CASE_DETAIL = new List<CASE_DETAIL>()
+                    };
+                    if (Session["ID"] != null)
+                    {
+                        res = new InterviewReport("KYL").ReportData(req);
+                    }
+                        
+
                     if(true){ 
                     foreach (CASE_DETAIL interview in res.CASE_DETAIL)
                     {
