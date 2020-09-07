@@ -86,8 +86,8 @@ namespace KYL_CMS.Controllers
         public ActionResult Login(FormCollection data)
         {
             ReturnStatus res = new ReturnStatus();
-            string account = data["account"];
-            string password = data["password"];
+            string account = data["account"].Trim();
+            string password = data["password"].Trim();
             SHA256 sha256 = new SHA256CryptoServiceProvider();
             byte[] source = Encoding.Default.GetBytes(data["password"]);
             byte[] crypto = sha256.ComputeHash(source); //進行SHA256加密
