@@ -1,7 +1,7 @@
 ﻿using System;
 //using System.Web;
-//using System.Text;
-//using System.Security.Cryptography;
+using System.Text;
+using System.Security.Cryptography;
 using System.Web.Mvc;
 //using System.Web.Security;
 using KYL_CMS.Models.EntityDefinition;
@@ -88,14 +88,40 @@ namespace KYL_CMS.Controllers
             ReturnStatus res = new ReturnStatus();
             string account = data["account"];
             string password = data["password"];
-            //SHA256 sha256 = new SHA256CryptoServiceProvider();
-            //byte[] source = Encoding.Default.GetBytes(data["password"]);
-            //byte[] crypto = sha256.ComputeHash(source); //進行SHA256加密
-            //string password = Convert.ToBase64String(crypto);
+            SHA256 sha256 = new SHA256CryptoServiceProvider();
+            byte[] source = Encoding.Default.GetBytes(data["password"]);
+            byte[] crypto = sha256.ComputeHash(source); //進行SHA256加密
+            string passwordSha256 = Convert.ToBase64String(crypto);
+
+            string ip = "";
+            try
+            {
+                //使用者瀏覽器
+                Log("UserAgent={0}", Request.UserAgent);
+
+                //使用者來源IP
+                System.Web.HttpContext context = System.Web.HttpContext.Current;
+                string ipAddress = context.Request.ServerVariables["HTTP_X_FORWARDED_FOR"];
+
+                if (!string.IsNullOrEmpty(ipAddress))
+                {
+                    string[] addresses = ipAddress.Split(',');
+                    if (addresses.Length != 0)
+                    {
+                        ip = addresses[0];
+                    }
+                }
+
+                ip = context.Request.ServerVariables["REMOTE_ADDR"];
+            }
+            catch
+            { }
+
 
             try
             {
-                Log("account={0}, password={1}", account, password);
+                Log("account={0}, password={1}, IP={2}", account, passwordSha256, ip);
+                
 
                 USER_INFO userInfo = new Authority("SCC").UserLoginAuthority(account, password);
                 if (userInfo != null)
