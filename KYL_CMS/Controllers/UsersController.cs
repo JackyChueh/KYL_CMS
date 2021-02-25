@@ -107,6 +107,8 @@ namespace KYL_CMS.Controllers
                     Log("Req=" + JsonConvert.SerializeObject(req));
                     req.USERS.MUSER = Session["ID"].ToString();
 
+                    req.USERS.ID = req.USERS.ID.Trim();
+
                     UsersModifyReq oldData = new UsersModifyReq();
                     oldData.USERS = new KYL_CMS.Models.BusinessLogic.Users("SCC").ModificationQuery(req.USERS.SN);
                     if (oldData.USERS.ID != req.USERS.ID && new Interview("KYL").CheckUserIdUsed(req.USERS.ID))
@@ -246,6 +248,9 @@ namespace KYL_CMS.Controllers
                     Log("Req=" + JsonConvert.SerializeObject(req));
                     req.USERS.CUSER = Session["ID"].ToString();
                     req.USERS.MUSER = Session["ID"].ToString();
+
+                    req.USERS.ID = req.USERS.ID.Trim();
+
                     if (req.USERS.PASSWORD.Length == 0)
                     {
                         req.USERS.PASSWORD = req.USERS.ID;
