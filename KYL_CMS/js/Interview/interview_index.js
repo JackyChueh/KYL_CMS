@@ -124,7 +124,7 @@
             InterviewIndex.CaseDelete();
         });
 
-        $('#detail_save').click(function () {
+        $('.detail_save').click(function () {
             InterviewIndex.DetailSave();
         });
 
@@ -890,16 +890,16 @@
         //console.log('value.CASE_STATUS' + value.CASE_STATUS);
 
         if (InterviewIndex.TimeOut && InterviewIndex.TimeOutIndex === idx) {
-            $('#detail_save').show();
+            $('.detail_save').show();
             template.find('[name=CASE_STATUS][value="04"]').attr('disabled', true);
         }
         else {
             if (InterviewIndex.UserId === value.VOLUNTEER_SN && value.CASE_STATUS !== '02' && value.CASE_STATUS !== '04') {
-                $('#detail_save').show();
+                $('.detail_save').show();
                 template.find('[name=CASE_STATUS][value="04"]').attr('disabled', true);
             }
             else {
-                $('#detail_save').hide();
+                $('.detail_save').hide();
             }
         }
         $('#detail_modal').modal('show');

@@ -1,5 +1,27 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Dashboard";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<div class="accordion" id="accordionExample">
+
+    <div class="card">
+        <div class="card-header" id="headingOne">
+            <h2 class="mb-0">
+                <button class="btn btn-link btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    如果遇到系統異常
+                </button>
+            </h2>
+        </div>
+
+        <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+            <div class="card-body">
+                <ul>
+                    <li>請不要關閉個案管理系統的畫面。</li>
+                    <li>於瀏覽器再開啟一個頁籤，重新登入個案管理系統。</li>
+                    <li>請系統管理員通知工程師。</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+</div>

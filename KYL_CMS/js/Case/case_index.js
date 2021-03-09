@@ -936,10 +936,18 @@
             $('#detail_gridview >  tbody').html('');
             var htmlRow = '';
             var temp = null;
+            var color = null;
             $.each(CaseIndex.INTERVIEW, function (idx, row) {
                 if (row.DataRow !== 'delete') {
                     temp = '';
-                    htmlRow = '<tr>';
+                    color = '';
+
+                    //若查詢條件是以志工代碼查詢, 則將相符合之明細列, 以紅色顯示。20210225
+                    if (row.VOLUNTEER_SN === $('#section_retrieve #VOLUNTEER_SN').val()) {
+                        color = row.CASE_STATUS === '02' ? 'text-danger' : '';
+                    }
+
+                    htmlRow = '<tr class=' + color + '>';
                     htmlRow += '<td style="text-align:center"><a class="fa fa-edit fa-lg" onclick="CaseIndex.DetailSelected(' + idx + ');" data-toggle="tooltip" data-placement="right" title="修改" style="cursor: pointer;"></a></td>';
                     htmlRow += '<td>' + row.CASE_NO + '</td>';
                     htmlRow += '<td>' + row.INCOMING_DATE.substr(0, 16).replace('T', ' ') + '</td>';
@@ -953,6 +961,7 @@
                     temp = temp.substr(1);
                     htmlRow += '<td>' + temp + '</td>';
                     temp = row.CASE_STATUS === '01' ? '草稿存檔' : row.CASE_STATUS === '02' ? '送交審核' : row.CASE_STATUS === '03' ? '審核退回請修改' : row.CASE_STATUS === '04' ? '審核完成' : '';
+             
                     htmlRow += '<td>' + temp + '</td>';
                     htmlRow += '</tr>';
                     $('#detail_gridview >  tbody').append(htmlRow);
