@@ -107,7 +107,7 @@ namespace KYL_CMS.Controllers
                 try
                 {
                     string data = Request["data"];
-                    Log("Res=" + data);
+                    Log("Req=" + data);
                     CaseModifyReq req = new CaseModifyReq();
                     JsonConvert.PopulateObject(data, req);
                     req.CASE.MUSER = Session["ID"].ToString();
