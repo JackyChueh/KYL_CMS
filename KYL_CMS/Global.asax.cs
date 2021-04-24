@@ -22,10 +22,9 @@ namespace KYL_CMS
         {
             try
             {
-                if (Session["ID"] != null)
+                if (Session.SessionID != null)
                 {
                     KYL_CMS.Models.HelpLibrary.Log.Write("Global", "Session_Start SessionID:" + Session.SessionID);
-                    KYL_CMS.Models.HelpLibrary.Log.Write("Global", "Session_Start Session[ID]:" + Session["ID"].ToString());
                 }
             }
             catch (Exception ex)
@@ -38,9 +37,12 @@ namespace KYL_CMS
         {
             try
             {
-                if (Session["ID"] != null)
+                if (Session.SessionID != null)
                 {
                     KYL_CMS.Models.HelpLibrary.Log.Write("Global", "Session_End SessionID:" + Session.SessionID);
+                }
+                if (Session["ID"] != null)
+                {
                     KYL_CMS.Models.HelpLibrary.Log.Write("Global", "Session_End Session[ID]:" + Session["ID"].ToString());
                 }
             }

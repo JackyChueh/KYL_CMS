@@ -6,6 +6,6 @@
     });
 
     $('#quit').click(function () {
-        document.location.href = '/Main/Login'
+        document.location.href = '/Main/Logout';
     });
 });

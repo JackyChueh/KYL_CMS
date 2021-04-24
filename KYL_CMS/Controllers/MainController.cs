@@ -75,9 +75,18 @@ namespace KYL_CMS.Controllers
 
             //FormsAuthentication.SignOut();
 
-            Session.Clear();
-            Session.Abandon();
-            return View();
+            //Session.Clear();
+            //Session.Abandon();
+            //return View();
+
+            if (Session["ID"] == null)
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Dashboard", "Main");
+            }
 
         }
 
@@ -153,7 +162,7 @@ namespace KYL_CMS.Controllers
                     }
                     else
                     {
-                        KYL_CMS.Models.HelpLibrary.Log.Write("Global", "Main/Login  SessionID:" + Session.SessionID);
+                        KYL_CMS.Models.HelpLibrary.Log.Write("Global", "Main/Login UserID:{0} SessionID:{1}", account, Session.SessionID);
                         return RedirectToAction("Dashboard", "Main");
                     }
                     
@@ -176,6 +185,19 @@ namespace KYL_CMS.Controllers
             }
             Log("Res=" + JsonConvert.SerializeObject(res));
             return View(res);
+        }
+
+        public ActionResult Logout(FormCollection data)
+        {
+
+            if (Session["ID"] != null)
+            {
+                KYL_CMS.Models.HelpLibrary.Log.Write("Global", "Main/Logout UserID:{0} SessionID:{1}", Session["ID"].ToString(), Session.SessionID);
+            }
+
+            Session.Clear();
+            Session.Abandon();
+            return RedirectToAction("Login", "Main");
         }
 
         ////[Authorize]
