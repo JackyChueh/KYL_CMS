@@ -742,8 +742,16 @@
             var temp = null;
             $.each(InterviewIndex.INTERVIEW, function (idx, row) {
                 if (row.DataRow !== 'delete') {
+
                     temp = '';
-                    htmlRow = '<tr>';
+                    color = '';
+
+                    //若查詢條件是以志工代碼查詢, 則將相符合之明細列, 以紅色顯示。20210225
+                    if (row.VOLUNTEER_SN === InterviewIndex.UserId) {
+                        color = row.CASE_STATUS === '01' ? 'text-primary' : row.CASE_STATUS === '03' ? 'text-danger' : '';
+                    }
+
+                    htmlRow = '<tr class=' + color + '>';
                     htmlRow += '<td style="text-align:center"><a class="fa fa-edit fa-lg" onclick="InterviewIndex.DetailSelected(' + idx + ');" data-toggle="tooltip" data-placement="right" title="修改" style="cursor: pointer;"></a></td>';
                     htmlRow += '<td>' + row.CASE_NO + '</td>';
                     htmlRow += '<td>' + row.INCOMING_DATE.substr(0, 16).replace('T', ' ') + '</td>';
@@ -754,6 +762,7 @@
                             temp += item.PHRASE_KEY ? ', ' + item.PHRASE_KEY : '';
                         });
                     }
+           
                     temp = temp.substr(1);
                     htmlRow += '<td>' + temp + '</td>';
                     temp = row.CASE_STATUS === '01' ? '草稿存檔' : row.CASE_STATUS === '02' ? '送交審核' : row.CASE_STATUS === '03' ? '審核退回請修改' : row.CASE_STATUS === '04' ? '審核完成' : '';
