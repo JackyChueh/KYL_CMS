@@ -78,7 +78,7 @@ namespace KYL_CMS.Controllers
                     pharse = (Dictionary<string, object>)itemRes.ItemList;
 
                     row = new Row();    //merge header line
-                    columnIndex = 13;   //跳過不需合併的欄位
+                    columnIndex = 14;   //跳過不需合併的欄位
 
                     columnIndex++;
                     dataCell = new Cell();
@@ -195,6 +195,11 @@ namespace KYL_CMS.Controllers
                         new Cell()
                         {
                             CellValue = new CellValue("個案來源"),
+                            DataType = CellValues.String
+                        },
+                        new Cell()
+                        {
+                            CellValue = new CellValue("此次來電者電話"),
                             DataType = CellValues.String
                         },
                         new Cell()
@@ -390,6 +395,11 @@ namespace KYL_CMS.Controllers
                             new Cell()
                             {
                                 CellValue = new CellValue(interview.CASE_SOURCE),
+                                DataType = CellValues.String
+                            },
+                            new Cell()
+                            {
+                                CellValue = new CellValue(interview.TEL),
                                 DataType = CellValues.String
                             },
                             new Cell()
